@@ -83,8 +83,8 @@ function Cart() {
     }
 
     var options = {
-      key: "",
-      key_secret: "",
+      key: "rzp_test_48h8h6PwTqDlvF", // Replace with your actual Razorpay key ID
+      key_secret: "rZCJHaO2tkfusUnImFp18jAX", // Replace with your actual Razorpay key secret
       amount: parseInt(grandTotal * 100),
       currency: "INR",
       order_receipt: 'order_rcptid_' + name,
