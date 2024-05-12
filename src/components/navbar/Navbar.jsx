@@ -1,11 +1,10 @@
 import React, { Fragment, useContext, useState } from 'react'
 import myContext from '../../context/data/myContext';
-import { BsFillCloudSunFill } from 'react-icons/bs'
-import { FiSun } from 'react-icons/fi'
 import { Link } from 'react-router-dom';
 import { Dialog, Transition } from '@headlessui/react'
 import { RxCross2 } from 'react-icons/rx'
 import { useSelector } from 'react-redux';
+import './Navbar.css'
 
 function Navbar() {
   const context = useContext(myContext);
@@ -129,8 +128,8 @@ function Navbar() {
                 onClick={() => setOpen(true)} style={{ backgroundColor: mode === 'dark' ? 'rgb(80 82 87)' : '', color: mode === 'dark' ? 'white' : '', }}
               >
                 <span className="sr-only">Open menu</span>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
 
               </button>
@@ -139,7 +138,7 @@ function Navbar() {
               <div className="ml-4 flex lg:ml-0">
                 <Link to={'/'} className='flex'>
                   <div className="flex ">
-                    <h1 className=' text-4xl font-bold text-black  px-2 py-1 rounded' style={{ color: mode === 'dark' ? 'white' : '' }}>ShoeSnap</h1>
+                    <h1 className='text-4xl font-bold text-black  px-2 py-1 rounded hover:no-underline' style={{ color: mode === 'dark' ? 'white' : '' }}>ShoeSnap</h1>
                   </div>
                 </Link>
               </div>
