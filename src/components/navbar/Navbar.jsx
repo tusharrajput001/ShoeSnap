@@ -147,7 +147,7 @@ function Navbar() {
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
 
                   <Link to={'/allproducts'} className="text-lg font-medium text-gray-700 " style={{ color: mode === 'dark' ? 'white' : '', }}>
-                    All Products
+                    Explore
                   </Link>
                  {user ?  <Link to={'/order'} className="text-lg font-medium text-gray-700 " style={{ color: mode === 'dark' ? 'white' : '', }}>
                     Order
