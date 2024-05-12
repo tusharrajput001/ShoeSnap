@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import { FaShoppingCart } from 'react-icons/fa'
 import myContext from '../../context/data/myContext'
 import Layout from '../../components/layout/Layout'
 import Loader from '../../components/loader/Loader'
@@ -9,6 +10,7 @@ function Order() {
   const { mode, loading, order } = context
   return (
     <Layout>
+      <h1 className='text-5xl text-slate-700 text-monospace text-center mt-5 mb-5'>My Orders</h1>
       {loading && <Loader />}
       {order.length > 0 ?
         (<>
@@ -42,13 +44,13 @@ function Order() {
             }
           </div>
         </>)
-        :
-        (
-          <h2 className=' text-center tex-2xl text-white'>Not Order</h2>
-        )
-
-      }
-    </Layout>
+        :(
+          <div className="flex flex-col items-center justify-center h-full mb-44">
+            <h2 className="text-center text-2xl text-black mb-4 mt-10 ">No Orders</h2>
+            <FaShoppingCart className="text-6xl text-gray-400" />
+          </div>
+        )}
+    </Layout> 
   )
 }
 

@@ -4,6 +4,7 @@ import myContext from '../../../context/data/myContext'
 function AddProduct() {
     const context = useContext(myContext);
     const { products, setProducts, addProduct } = context;
+
     return (
         <div>
             <div className='flex justify-center items-center h-screen'>
@@ -48,17 +49,29 @@ function AddProduct() {
                         />
                     </div>
                     <div>
-                        <textarea cols="30" rows="10" name='title'
-                         value={products.description}
-                         onChange={(e) => setProducts({ ...products, description: e.target.value })}
+                        <textarea
+                            cols="30"
+                            rows="10"
+                            name='description'
+                            value={products.description}
+                            onChange={(e) => setProducts({ ...products, description: e.target.value })}
                             className=' bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
-                            placeholder='Product desc'>
-
-                        </textarea>
+                            placeholder='Product desc'
+                        />
+                    </div>
+                    {/* Add input field for product features */}
+                    <div>
+                        <input type="text"
+                            value={products.features}
+                            onChange={(e) => setProducts({ ...products, features: e.target.value })}
+                            name='features'
+                            className=' bg-gray-600 mb-4 px-2 py-2 w-full lg:w-[20em] rounded-lg text-white placeholder:text-gray-200 outline-none'
+                            placeholder='Product features (comma separated)'
+                        />
                     </div>
                     <div className=' flex justify-center mb-3'>
                         <button
-                        onClick={addProduct}
+                            onClick={addProduct}
                             className=' bg-yellow-500 w-full text-black font-bold  px-2 py-2 rounded-lg'>
                             Add Product
                         </button>
