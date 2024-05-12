@@ -1,83 +1,73 @@
-.rev-Crd{
+.rev-Crd {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 25vw;
+  overflow-y: hidden;
+  border-radius: 30px;
+  background-color: #ff5e006e;
+  box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+}
+
+.avatar-con {
+  position: relative;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+}
+
+.avatar-con img {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+.stars {
+  color: rgb(255, 145, 0);
+  font-size: x-large;
+}
+
+.rev-Crd p {
+  display: flex;
+  flex-wrap: wrap;
+  width: 80%;
+  margin: 5vh auto;
+  color: white;
+  font-size: 1.2rem;
+}
+
+@media (max-width: 1100px) {
+  .rev-Crd {
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 25vw;
-    overflow-y: hidden; 
-    border-radius: 30px;
-    background-color:#d8c8ade9;
-    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
-    
-}
-
-.avatar-con{
-    position: relative;
-    height: 80px;
-    display: flex;
-    justify-content: center;
-}
-
-
-.avatar-con img{
-    position: absolute;
-    width: 80px;
-    height: 80px;
-    border-radius: 50px;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
-
-}
-
-.stars{
-    color: rgb(255, 145, 0); 
-    font-size: xx-large; 
-}
-    
-.rev-Crd p{
-    display: flex;
-    flex-wrap: wrap;
-    width: 80%;
-    margin: 5vh auto;
-    color: white;
+    width: 50vw;
+    margin: 2rem;
+    padding: 2rem;
+    overflow-y: hidden;
+  }
+  .stars {
+    color: rgb(255, 145, 0);
     font-size: x-large;
+  }
 }
 
+@media (max-width: 668px) {
+  .rev-Crd {
+    width: 50vw;
+    /* height: 40vw; */
+    margin: 1rem;
+    padding: 1rem;
+  }
+  .stars {
+    font-size: large;
+  }
 
-
-
-@media (max-width:1100px) {
-    .rev-Crd{
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        width: 50vw;
-        margin: 2rem;
-        padding: 2rem;
-        overflow-y: hidden;
-    }
-    .stars{
-        color: rgb(255, 145, 0); 
-        font-size: x-large; 
-    }
-}
-
-
-
-
-@media (max-width:668px) {
-    .rev-Crd{
-        width: 50vw;
-        /* height: 40vw; */
-        margin: 1rem;
-        padding: 1rem;
-    }
-    .stars{
-        font-size: large; 
-    }
-
-    .rev-Crd p{
-        font-size: large;
-    }
-    
+  .rev-Crd p {
+    font-size: small;
+  }
 }
