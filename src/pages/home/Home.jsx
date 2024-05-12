@@ -7,13 +7,14 @@ import ProductCard from '../../components/productCard/ProductCard'
 import Track from '../../components/track/Track'
 import Testimonial from '../../components/testimonial/Testimonial'
 import { Link } from 'react-router-dom'
+import HomeSearch from '../../components/filter/HomeSearch'
 
 
 function Home() {
   return (
     <Layout>
       <HeroSection />
-      <Filter />
+      <HomeSearch/> 
       <ProductCard />
       <div className="flex justify-center -mt-10 mb-4">
         <Link to={'/allproducts'}>
