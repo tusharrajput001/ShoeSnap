@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import myContext from '../../context/data/myContext';
 import { toast } from 'react-toastify';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -24,8 +24,6 @@ function Signup() {
         try {
             const users = await createUserWithEmailAndPassword(auth, email, password);
 
-            // console.log(users)
-
             const user = {
                 name: name,
                 uid: users.user.uid,
@@ -34,7 +32,7 @@ function Signup() {
             }
             const userRef = collection(fireDB, "users")
             await addDoc(userRef, user);
-            toast.success("Signup Succesfully")
+            toast.success("Signup Successfully")
             setName("");
             setEmail("");
             setPassword("");
@@ -46,55 +44,56 @@ function Signup() {
         }
     }
 
-    return (
-        <div className='flex justify-center items-center h-screen'>
-            <div className='bg-gray-800 px-10 py-10 rounded-xl w-full max-w-md'>
-                <div className="mb-8">
-                    <h1 className='text-center text-white text-xl mb-4 font-bold'>Signup</h1>
-                </div>
-                <div className="mb-4">
-                    <input
-                        type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        name='name'
-                        className='bg-gray-600 mb-4 px-3 py-2 w-full rounded-lg text-white placeholder-text-gray-200 outline-none'
-                        placeholder='Name'
-                    />
-                </div>
-                <div className="mb-4">
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        name='email'
-                        className='bg-gray-600 mb-4 px-3 py-2 w-full rounded-lg text-white placeholder-text-gray-200 outline-none'
-                        placeholder='Email'
-                    />
-                </div>
-                <div className="mb-4">
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className='bg-gray-600 mb-4 px-3 py-2 w-full rounded-lg text-white placeholder-text-gray-200 outline-none'
-                        placeholder='Password'
-                    />
-                </div>
-                <div className='mb-4'>
-                    <button
-                        onClick={signup}
-                        className='bg-customOrange w-full text-white font-bold px-3 py-2 rounded-lg'>
-                        Signup
-                    </button>
-                </div>
-                <div>
-                    <h2 className='text-white text-center'>Have an account? <Link className='text-red-500 font-bold' to={'/login'}>Login</Link></h2>
+    return (    
+        <section className="vh-100" >
+            <div className="container h-100">
+                <div className="row d-flex justify-content-center align-items-center h-100">
+                    <div className="col-lg-12 col-xl-11">
+                        <div className="card text-black border-0">
+                            <div className="card-body p-md-5">
+                                <div className="row justify-content-center">
+                                    <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+                                        <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4 text-5xl font-bold ">Sign up</p>
+                                        <form className="mx-1 mx-md-4">
+                                            <div className="d-flex flex-row align-items-center mb-4">
+                                                <i className="fas fa-user fa-lg me-3 fa-fw"></i>
+                                                <div data-mdb-input-init className="form-outline flex-fill mb-0">
+                                                    <input placeholder='Your Name' type="text" id="form3Example1c" className="form-control" value={name} onChange={(e) => setName(e.target.value)} />
+                                          
+                                                </div>
+                                            </div>
+                                            <div className="d-flex flex-row align-items-center mb-4">
+                                                <i className="fas fa-envelope fa-lg me-3 fa-fw"></i>
+                                                <div data-mdb-input-init className="form-outline flex-fill mb-0">
+                                                    <input placeholder='Your Email' type="email" id="form3Example3c" className="form-control" value={email} onChange={(e) => setEmail(e.target.value)} />
+                                                   
+                                                </div>
+                                            </div>
+                                            <div className="d-flex flex-row align-items-center mb-4">
+                                                <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
+                                                <div data-mdb-input-init className="form-outline flex-fill mb-0">
+                                                    <input placeholder='Password' type="password" id="form3Example4c" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} />
+                                                  
+                                                </div>
+                                            </div>
+                                            
+                                            <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                                                <button type="button" data-mdb-button-init data-mdb-ripple-init className="btn btn-primary btn-lg bg-customOrange" onClick={signup}>Register</button>
+                                            </div>
+                                        </form>
+                                        <p className="text-center mb-0">Already have an account? <Link className='text-customOrange font-bold' to="/login">Login</Link></p>
+                                    </div>
+                                    <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+                                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp" className="img-fluid" alt="Sample image" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
     )
 }
 
-
-export default Signup
+export default Signup;
