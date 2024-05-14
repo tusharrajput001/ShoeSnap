@@ -5,6 +5,7 @@ import Layout from "../../components/layout/Layout";
 import myContext from "../../context/data/myContext";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../redux/cartSlice";
+import HomePageProducts from "../../components/productCard/HomePageProducts";
 
 function Allproducts() {
   const context = useContext(myContext);
@@ -38,7 +39,8 @@ function Allproducts() {
   return (
     <Layout>
       <Filter />
-      <ProductCard />
+      <HomePageProducts />
+      {/* <ProductCard /> */}
     </Layout>
   );
 }
