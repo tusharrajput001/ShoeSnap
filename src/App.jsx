@@ -6,6 +6,7 @@ import {
   Navigate,
 } from "react-router-dom";
 
+import Account from "./pages/Account/account";
 import Home from "./pages/home/Home";
 import Order from "./pages/order/Order";
 import Cart from "./pages/cart/Cart";
@@ -36,6 +37,7 @@ function App() {
             }
           />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/account" element={<Account />} />
           <Route
             path="/dashboard"
             element={

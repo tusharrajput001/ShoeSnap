@@ -166,23 +166,14 @@ function Navbar() {
                   </a> : ""}
                 </div>
 
-                {/* <div className="hidden lg:ml-8 lg:flex">
-                  <a href="#" className="flex items-center text-gray-700 ">
-                    <img
-                      src="https://ecommerce-sk.vercel.app/img/indiaflag.png"
-                      alt=""
-                      className="block h-auto w-5 flex-shrink-0"
-                    />
-                    <span className="ml-3 block text-sm font-medium" style={{ color: mode === 'dark' ? 'white' : '', }}>INDIA</span>
-                  </a>
-                </div> */}  
+
                 <div className="hidden lg:ml-8 lg:flex">
-                  <a href="#" className="flex items-center text-gray-700 ">
-                    <img
+                  <Link to={'/account'} className="flex items-center text-gray-700 ">
+                    <img  
                       className="inline-block w-10 h-10 rounded-full"
                       src="https://imgs.search.brave.com/LHP3bTuTj_Y8n53k52l7ZKQLvGPYc9UWzcAaI_iCqvs/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTE2/Mjc5ODM5NC92ZWN0/b3IvcHJvZmlsZS1w/aWN0dXJlLXZlY3Rv/ci1pbGx1c3RyYXRp/b24uanBnP3M9NjEy/eDYxMiZ3PTAmaz0y/MCZjPW05OVRPUEMw/RUJFT24tZk1xWnZH/bEJXUkJZa1dDWEYw/T2pWTG9JTENhd0U9"
                       alt="Dan_Abromov" />
-                  </a>
+                  </Link>
                 </div>
 
                 {/* <div className="flex lg:ml-6">
