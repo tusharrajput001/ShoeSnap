@@ -31,13 +31,16 @@ function Cart() {
   const [totalAmout, setTotalAmount] = useState(0);
 
   useEffect(() => {
-    let temp = 0;
+    let temp = 0; 
     cartItems.forEach((cartItem) => {
-      temp = temp + parseInt(cartItem.price)
-    })
+      const price = parseFloat(cartItem.price.replace(/[₹,]/g, ''));
+      if (!isNaN(price)) {
+        temp += price;
+      }
+    });
     setTotalAmount(temp);
-    console.log(temp)
-  }, [cartItems])
+  }, [cartItems]);
+  
 
   const shipping = parseInt(100);
 
@@ -127,7 +130,7 @@ function Cart() {
 
     var pay = new window.Razorpay(options);
     pay.open();
-    // console.log(pay)
+    // console.log(pay) 
 
 
   }
