@@ -11,10 +11,16 @@
 }
 
 .pr-head{
-    margin-top: 20px;
+    margin-top: 100px;
+    margin-bottom: 40px;
+    font-size: 2.2em;
+    font-weight: 500;
+    font-family: 'Roboto', sans-serif;
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    font-size: 2vw;
+    align-items: center;
+    /* font-family: "Anek Latin", sans-serif; */
 }
 
 .awssld__content{

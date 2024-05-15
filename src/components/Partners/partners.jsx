@@ -21,7 +21,9 @@ function Partners() {
 
   return (
     <>
-      <h2 className='pr-head'>OUR PARTNERS</h2>
+      <h2 className='pr-head'>Our Partners</h2>
+      {/* <div className="h-1  w-100 bg-customOrange rounded"></div> */}
+      
       <div className='slider-full'>
         <AwesomeSlider selected={currentIndex} bullets={false} className='img-sl-con'>
           <div><img src={Img1} alt="Image 1" /></div>
@@ -30,7 +32,9 @@ function Partners() {
           <div><img src={Img4} alt="Image 4" /></div>
           <div><img src={Img5} alt="Image 5" /></div>
         </AwesomeSlider>
+        
       </div>
+      
     </>
   );
 }
