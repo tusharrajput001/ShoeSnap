@@ -1,4 +1,6 @@
 import React from "react";
+import { useContext } from "react";
+import MyContext from '../../context/data/myContext';
 import "./account.css";
 import { Link } from "react-router-dom";
 
@@ -8,6 +10,8 @@ const logout = () => {
 }
 
 function Account() {
+  const { currentUser } = useContext(MyContext);
+  const userName = currentUser ? currentUser.name : "Name"; 
   return (
     <div className="fullScreen">
       <div className="main-container">
@@ -19,7 +23,7 @@ function Account() {
             />
           </div>
           <div className="profileName">
-            <h1>Name</h1>
+            <h1>{userName}</h1>
           </div>
           <div>
             <button className="btnLogout" onClick={logout}>Logout</button>
