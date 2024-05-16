@@ -10,25 +10,18 @@ import { doc, updateDoc } from "firebase/firestore";
 
 function DashboardTab() {
   const context = useContext(myContext);
-  const { mode, product, edithandle, deleteProduct, order, user } = context;
+  const {
+    mode,
+    product,
+    edithandle,
+    deleteProduct,
+    order,
+    user,
+    updateOrderStatus,
+  } = context;
 
   // Function to accept an order and update its status
-  const acceptOrder = async (orderId) => {
-    try {
-      console.log("Accepting order with orderId:", orderId);
-  
-      // Assuming orderId is the document ID of the order
-      const orderRef = doc(fireDB, "order", orderId);
-      console.log("Order reference:", orderRef);
-  
-      // Update the order status to "confirmed"
-      await updateDoc(orderRef, { orderStatus: "confirmed" });
-  
-      console.log("Order status updated successfully to 'confirmed'");
-    } catch (error) {
-      console.error("Error updating order status:", error);
-    }
-  };
+  const acceptOrder = {};
 
   // console.log(product)
   let [isOpen, setIsOpen] = useState(false);
@@ -433,19 +426,12 @@ function DashboardTab() {
                                 {allorder.orderStatus}
                               </td>
                               <td>
-                                {allorder.orderStatus !== "confirmed" && (
-                                  <button
-                                    onClick={() =>
-                                      acceptOrder(allorder.orderId)
-                                    }
-                                  >
-                                    Accept Order
-                                  </button>
-                                )}
+                              <button onClick={() => updateOrderStatus(allorder.paymentId)}>Accept Order</button>
+
                               </td>
                             </tr>
                           </tbody>
-                        );
+                        );  
                       })}
                     </table>
                   );

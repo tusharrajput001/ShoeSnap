@@ -3,7 +3,9 @@
     import { Timestamp, addDoc, collection, deleteDoc, doc, getDocs, onSnapshot, orderBy, query, setDoc } from 'firebase/firestore';
     import { toast } from 'react-toastify';
     import { fireDB } from '../../fireabase/FirebaseConfig';
-
+    import { where } from 'firebase/firestore'; 
+    import { updateDoc } from 'firebase/firestore';
+    
     function myState(props) {
         const [mode, setMode] = useState('light');
 
@@ -184,6 +186,45 @@
         const [searchkey, setSearchkey] = useState('')
         const [filterType, setFilterType] = useState('')
         const [filterPrice, setFilterPrice] = useState('')
+        
+        const updateOrderStatus = async (paymentId) => {
+            setLoading(true);
+            try {
+                const orderQuery = query(
+                    collection(fireDB, 'order'),
+                    where('paymentId', '==', paymentId)
+                );
+        
+                const orderSnapshot = await getDocs(orderQuery);
+                const orderDocs = orderSnapshot.docs;
+        
+                if (orderDocs.length === 0) {
+                    // Handle case where order with given paymentId is not found
+                    setLoading(false);
+                    toast.error('Order not found');
+                    return;
+                }
+        
+                const orderDoc = orderDocs[0];
+                const orderId = orderDoc.id;
+        
+                const orderRef = doc(fireDB, 'order', orderId);
+                await updateDoc(orderRef, {
+                    orderStatus: 'confirmed'
+                });
+                toast.success('Order Confirmed');
+                setLoading(false);
+            } catch (error) {
+                console.error('Error updating order status:', error);
+                setLoading(false);
+                toast.error('Failed to confirm order');
+            }
+        };
+        
+          
+          
+
+
 
         return (
             <MyContext.Provider value={{
@@ -191,11 +232,11 @@
                 products, setProducts, addProduct, product,
                 edithandle, updateProduct, deleteProduct, order,
                 user, searchkey, setSearchkey,filterType,setFilterType,
-                filterPrice,setFilterPrice
+                filterPrice,setFilterPrice,updateOrderStatus,
             }}>
                 {props.children}
             </MyContext.Provider>
-        )
+        )   
     }
 
     export default myState
