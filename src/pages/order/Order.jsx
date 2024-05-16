@@ -1,13 +1,71 @@
-import React, { useContext } from 'react'
-import { FaShoppingCart } from 'react-icons/fa'
-import myContext from '../../context/data/myContext'
-import Layout from '../../components/layout/Layout'
-import Loader from '../../components/loader/Loader'
+import React, { useContext, useState, useEffect } from 'react';
+import { FaShoppingCart } from 'react-icons/fa';
+import myContext from '../../context/data/myContext';
+import Layout from '../../components/layout/Layout';
+import Loader from '../../components/loader/Loader';
+import StarRatings from 'react-star-ratings';
+import { toast } from "react-toastify";
+import { addDoc, collection, Timestamp } from 'firebase/firestore';
+import { fireDB } from '../../fireabase/FirebaseConfig';
 
 function Order() {
-  const userid = JSON.parse(localStorage.getItem('user')).user.uid
-  const context = useContext(myContext)
-  const { mode, loading, order } = context
+  const userid = JSON.parse(localStorage.getItem('user')).user.uid;
+  const context = useContext(myContext);
+  const { mode, loading, order, getProductReviews, reviews } = context;
+
+  const [feedbacks, setFeedbacks] = useState({});
+  const [ratings, setRatings] = useState({});
+
+  useEffect(() => {
+    order.forEach((orderItem) => {
+      orderItem.cartItems.forEach((item) => {
+        getProductReviews(item.id); // Fetch reviews for each product
+      });
+    });
+  }, [order]);
+
+  const handleFeedbackChange = (orderId, value) => {
+    setFeedbacks((prev) => ({ ...prev, [orderId]: value }));
+  };
+
+  const handleRatingChange = (orderId, value) => {
+    setRatings((prev) => ({ ...prev, [orderId]: value }));
+  };
+
+  const handleSubmitFeedback = async (orderId, productId) => {
+    try {
+      const feedbackContent = feedbacks[orderId] || '';
+      const rating = ratings[orderId] || 0;
+
+      if (feedbackContent.trim() === '') {
+        return toast.error("Feedback content cannot be empty");
+      }
+
+      if (rating === 0) {
+        return toast.error("Please provide a rating");
+      }
+
+      const reviewData = {
+        orderId: orderId,
+        userId: userid,
+        productId: productId,  // Include productId
+        feedback: feedbackContent,
+        rating: rating,
+        timestamp: Timestamp.now()
+      };
+
+      const reviewRef = collection(fireDB, 'reviews');
+      await addDoc(reviewRef, reviewData);
+
+      setFeedbacks((prev) => ({ ...prev, [orderId]: '' }));
+      setRatings((prev) => ({ ...prev, [orderId]: 0 }));
+
+      toast.success("Feedback submitted successfully");
+    } catch (error) {
+      console.error("Error submitting feedback:", error);
+      toast.error("Failed to submit feedback");
+    }
+  };
 
   return (
     <Layout>
@@ -18,9 +76,9 @@ function Order() {
           {order.filter(obj => obj.userid === userid).map((order, orderIndex) => (
             <div key={orderIndex} className="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
               <div>
-              <h1 className="text-md font-bold text-gray-900 mb-3">Status: {order.orderStatus}</h1>
-              <h1 className="text-md font-bold text-gray-900 mb-3">Date: {order.date}</h1>
-              <h3 className="text-md font-bold text-gray-900 mb-3">Order ID: {order.paymentId}</h3>
+                <h1 className="text-md font-bold text-gray-900 mb-3">Status: {order.orderStatus}</h1>
+                <h1 className="text-md font-bold text-gray-900 mb-3">Date: {order.date}</h1>
+                <h3 className="text-md font-bold text-gray-900 mb-3">Order ID: {order.paymentId}</h3>
               </div>
               {order.cartItems.map((item, itemIndex) => (
                 <div key={itemIndex} className="rounded-lg md:w-2/3">
@@ -34,6 +92,40 @@ function Order() {
                       </div>
                     </div>
                   </div>
+                  {/* Review Form */}
+                  <div className="mt-4">
+                    <h2 className="text-gray-900 text-xl font-medium mb-2">
+                      Leave a Review
+                    </h2>
+                    <div className="flex items-center mb-4">
+                      <span className="text-gray-700 mr-2">Rating:</span>
+                      <div className="mt-4">
+                        <StarRatings
+                          rating={ratings[order.paymentId] || 0}
+                          starRatedColor="orange"
+                          changeRating={(value) => handleRatingChange(order.paymentId, value)}
+                          numberOfStars={5}
+                          name="rating"
+                          starDimension="3rem"
+                          starSpacing="0"
+                          svgIconPath="M9.5 14.25l-5.584 2.936 1.066-6.218L.465 6.564l6.243-.907L9.5 0l2.792 5.657 6.243.907-4.517 4.404 1.066 6.218"
+                        />
+                      </div>
+                    </div>
+                    <textarea
+                      className="w-full h-32 px-4 py-2 text-base placeholder-gray-500 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      placeholder="Enter your feedback here..."
+                      value={feedbacks[order.paymentId] || ''}
+                      onChange={(e) => handleFeedbackChange(order.paymentId, e.target.value)}
+                    ></textarea>
+                    <button
+                      onClick={() => handleSubmitFeedback(order.paymentId, item.id)}
+                      className="mt-4 bg-customOrange text-white py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    >
+                      Submit Review
+                    </button>
+                  </div>
+                  {/* Display Reviews */}        
                 </div>
               ))}
             </div>
@@ -46,7 +138,8 @@ function Order() {
         </div>
       )}
     </Layout>
-  )
+  );
 }
 
-export default Order
+export default Order;
+
