@@ -140,14 +140,14 @@ function Navbar() {
                       className="-m-2 block p-2 font-medium text-gray-900 cursor-pointer"
                     >
                       <img
-                        className="inline-block w-10 h-10 rounded-full"
+                        className="inline-block w-12 h-10 rounded-full"
                         src="https://overreacted.io/static/profile-pic-c715447ce38098828758e525a1128b87.jpg"
-                        alt="Dan_Abromov"
+                        alt="Profile"
                       />{" "}
                     </Link>
                   </div>
                 </div>
-
+{/* 
                 <div className="border-t border-gray-200 px-4 py-6">
                   <a href="#" className="-m-2 flex items-center p-2">
                     <img
@@ -163,7 +163,7 @@ function Navbar() {
                     </span>
                     <span className="sr-only">, change currency</span>
                   </a>
-                </div>
+                </div> */}
               </Dialog.Panel>
             </Transition.Child>
           </div>

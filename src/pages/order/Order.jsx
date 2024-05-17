@@ -75,11 +75,7 @@ function Order() {
         <div className="h-full pt-10">
           {order.filter(obj => obj.userid === userid).map((order, orderIndex) => (
             <div key={orderIndex} className="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
-              <div>
-                <h1 className="text-md font-bold text-gray-900 mb-3">Status: {order.orderStatus}</h1>
-                <h1 className="text-md font-bold text-gray-900 mb-3">Date: {order.date}</h1>
-                <h3 className="text-md font-bold text-gray-900 mb-3">Order ID: {order.paymentId}</h3>
-              </div>
+
               {order.cartItems.map((item, itemIndex) => (
                 <div key={itemIndex} className="rounded-lg md:w-2/3">
                   <div className="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start" style={{ backgroundColor: mode === 'dark' ? '#282c34' : '', color: mode === 'dark' ? 'white' : '' }}>
@@ -91,9 +87,14 @@ function Order() {
                         <p className="mt-1 text-xs text-gray-700" style={{ color: mode === 'dark' ? 'white' : '' }}>{item.price}</p>
                       </div>
                     </div>
+                    <div className='w-50'>
+                <h1 className="text-sm text-monospace text-gray-900 mb-3">Order: {order.orderStatus}</h1>
+                <h1 className="text-sm text-monospace text-gray-900 mb-3">Date: {order.date}</h1>
+                {/* <h3 className="text-md font-bold text-gray-900 mb-3">Order ID: {order.paymentId}</h3> */}
+              </div>
                   </div>
                   {/* Review Form */}
-                  <div className="mt-4">
+                  <div className="mt-4 pb-5">
                     <h2 className="text-gray-900 text-xl font-medium mb-2">
                       Leave a Review
                     </h2>

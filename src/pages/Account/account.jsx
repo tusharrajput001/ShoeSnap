@@ -3,6 +3,9 @@ import { useContext } from "react";
 import MyContext from '../../context/data/myContext';
 import "./account.css";
 import { Link } from "react-router-dom";
+import Navbar from "../../components/navbar/Navbar";
+import Footer from "../../components/footer/Footer";
+
 
 const logout = () => {
   localStorage.clear('user');
@@ -13,6 +16,8 @@ function Account() {
   const { currentUser } = useContext(MyContext);
   const userName = currentUser ? currentUser.name : "Name"; 
   return (
+    <>
+    <Navbar/>
     <div className="fullScreen">
       <div className="main-container">
         <div className="profileContainer">
@@ -38,6 +43,8 @@ function Account() {
         <div><Link to="/allproducts">Explore</Link></div>
       </div>
     </div>
+    <Footer/>
+    </>
   );
 }
 

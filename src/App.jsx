@@ -37,7 +37,7 @@ function App() {
             }
           />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/account" element={ <Account />} />
+          <Route path="/account" element={ <Account /> } />
           <Route
             path="/dashboard"
             element={
