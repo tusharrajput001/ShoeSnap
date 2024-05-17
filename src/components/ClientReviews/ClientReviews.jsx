@@ -8,11 +8,11 @@ function ClientReviews() {
       <div className="reviews-container">
         <Review_Card
           stars_icon={
-            <i class="fa-solid fa-star">
-              <i class="fa-solid fa-star">
-                <i class="fa-solid fa-star">
-                  <i class="fa-solid fa-star">
-                    <i class="fa-solid fa-star"></i>
+            <i className="fa-solid fa-star">
+              <i className="fa-solid fa-star">
+                <i className="fa-solid fa-star">
+                  <i className="fa-solid fa-star">
+                    <i className="fa-solid fa-star"></i>
                   </i>
                 </i>
               </i>
@@ -25,11 +25,11 @@ function ClientReviews() {
         />
         <Review_Card
           stars_icon={
-            <i class="fa-solid fa-star">
-              <i class="fa-solid fa-star">
-                <i class="fa-solid fa-star">
-                  <i class="fa-solid fa-star">
-                    <i class="fa-solid fa-star"></i>
+            <i className="fa-solid fa-star">
+              <i className="fa-solid fa-star">
+                <i className="fa-solid fa-star">
+                  <i className="fa-solid fa-star">
+                    <i className="fa-solid fa-star"></i>
                   </i>
                 </i>
               </i>
@@ -42,11 +42,11 @@ function ClientReviews() {
         />
         <Review_Card
           stars_icon={
-            <i class="fa-solid fa-star">
-              <i class="fa-solid fa-star">
-                <i class="fa-solid fa-star">
-                  <i class="fa-solid fa-star">
-                    <i class="fa-solid fa-star"></i>
+            <i className="fa-solid fa-star">
+              <i className="fa-solid fa-star">
+                <i className="fa-solid fa-star">
+                  <i className="fa-solid fa-star">
+                    <i className="fa-solid fa-star"></i>
                   </i>
                 </i>
               </i>

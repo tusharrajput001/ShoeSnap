@@ -21,24 +21,7 @@ function ProductInfo() {
   const [feedbackContent, setFeedbackContent] = useState(""); 
   const [rating, setRating] = useState(0);
 
-  const getProductData = async () => {
-    setLoading(true);
-    try {
-      const productTemp = await getDoc(doc(fireDB, "products", params.id));
-      setProducts(productTemp.data());
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getProductData();
-  }, []);
-
   const dispatch = useDispatch();
-
   const cartItems = useSelector((state) => state.cart);
 
   // Add to cart
@@ -51,6 +34,18 @@ function ProductInfo() {
     localStorage.setItem("cart", JSON.stringify(cartItems));
   }, [cartItems]);
 
+  const getProductData = async () => {
+    setLoading(true);
+    try {
+      const productTemp = await getDoc(doc(fireDB, "products", params.id));
+      setProducts(productTemp.data());
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+
   const getReviews = async () => {
     setLoading(true);
     try {
@@ -61,22 +56,27 @@ function ProductInfo() {
       const snapshot = await getDocs(reviewsQuery);
       const reviewsData = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
       setReviews(reviewsData);
-
+  
       // Fetch user details for each review
       const userIds = [...new Set(reviewsData.map(review => review.userId))];
       const usersData = {};
       await Promise.all(userIds.map(async (userId) => {
         const userDoc = await getDoc(doc(fireDB, "users", userId));
-        usersData[userId] = userDoc.data();
+        if (userDoc.exists()) {
+          usersData[userId] = userDoc.data();
+        }
       }));
       setUsers(usersData);
-
       setLoading(false);
     } catch (error) {
       console.log(error);
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    getProductData();
+  }, [params.id]);
 
   useEffect(() => {
     getReviews();
@@ -148,7 +148,7 @@ function ProductInfo() {
                           />
                         </div>
                         <p className="text-gray-600 mb-2">
-                          {users[review.userId] ? users[review.userId].name : "Anonymous"}
+                          {users[review.userId]?.name || "Anonymous"}
                         </p>
                         <p>{review.feedback}</p>
                       </div>
