@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import { addToCart } from "../../redux/cartSlice";
 import { fireDB } from "../../fireabase/FirebaseConfig";
 import StarRatings from 'react-star-ratings';
-import './ProductInfor.css'
+import './ProductInfor.css';
 
 function ProductInfo() {
   const context = useContext(myContext);
@@ -22,6 +22,7 @@ function ProductInfo() {
   const [feedbackContent, setFeedbackContent] = useState(""); 
   const [rating, setRating] = useState(0);
   const [selectedSize, setSelectedSize] = useState(null); // State to track selected shoe size
+  const [selectedQuantity, setSelectedQuantity] = useState(1); // State to track selected quantity
 
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart);
@@ -30,7 +31,7 @@ function ProductInfo() {
   const addCart = (products) => {
     // Ensure a size is selected before adding to cart
     if (selectedSize) {
-      const productToAdd = { ...products, size: selectedSize }; // Include selected size in product data
+      const productToAdd = { ...products, size: selectedSize, quantity: selectedQuantity }; // Include selected size and quantity in product data
       dispatch(addToCart(productToAdd));
       toast.success("Added to cart");
     } else {
@@ -95,6 +96,11 @@ function ProductInfo() {
     setSelectedSize(size);
   };
 
+  // Function to handle change in selected quantity
+  const handleQuantityChange = (e) => {
+    setSelectedQuantity(parseInt(e.target.value));
+  };
+
   return (
     <Layout>
       <section className="text-gray-600 body-font overflow-hidden">
@@ -129,44 +135,30 @@ function ProductInfo() {
                 )}
         <h3 className="font-bold pb-3">Shoe Size Chart</h3>
       <div className="shoe-size-chart mb-5">
-
         <div className="size-row p-2 text-center">
-        <div
-            className={`w-10 h-10  size-option ${selectedSize === "6" ? 'selected' : ''}`}
-            onClick={() => handleSizeChange("6")}
-          >
-            <p>6</p>
-          </div>
-          <div
-            className={`w-10 h-10 size-option ${selectedSize === "7" ? 'selected' : ''}`}
-            onClick={() => handleSizeChange("7")}
-          >
-            <p>7</p>
-          </div>
-          <div
-            className={`w-10 h-10 size-option ${selectedSize === "8" ? 'selected' : ''}`}
-            onClick={() => handleSizeChange("8")}
-          >
-            <p>8</p>
-          </div>
-          <div
-            className={`w-10 h-10 size-option ${selectedSize === "9" ? 'selected' : ''}`}
-            onClick={() => handleSizeChange("9")}
-          >
-            <p>9</p>
-          </div>
-          <div
-            className={`w-10 h-10 size-option ${selectedSize === "10" ? 'selected' : ''}`}
-            onClick={() => handleSizeChange("10")}
-          >
-            <p>10</p>
-          </div>
-
+          {/* Shoe size options */}
+          {[6, 7, 8, 9, 10].map((size) => (
+            <div
+              key={size}
+              className={`w-10 h-10 size-option ${selectedSize === size ? 'selected' : ''}`}
+              onClick={() => handleSizeChange(size)}
+            >
+              <p>{size}</p>
+            </div>
+          ))}
         </div>
       </div>
-
-
-
+      {/* Quantity selection */}
+      <div className="mb-4">
+        <label className="font-bold mr-2">Quantity:</label>
+        <input
+          type="number"
+          min="1"
+          value={selectedQuantity}
+          onChange={handleQuantityChange}
+          className="border rounded p-1 w-20"
+        />
+      </div>
                 <div className="flex">
                   <span className="title-font font-medium text-2xl text-gray-900">
                     ₹{products.price}

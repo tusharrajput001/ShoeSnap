@@ -122,6 +122,19 @@ function Cart() {
     pay.open();
     // console.log(pay)
   };
+
+  // price update according to qty
+  useEffect(() => {
+    let temp = 0;
+    cartItems.forEach((cartItem) => {
+      const price = parseFloat(cartItem.price.replace(/[₹,]/g, ""));
+      const quantity = cartItem.quantity; // Get the quantity of the item
+      if (!isNaN(price) && !isNaN(quantity)) {
+        temp += price * quantity; // Multiply price by quantity
+      }
+    });
+    setTotalAmount(temp);
+  }, [cartItems]);
   return (
     <Layout>
       <div
@@ -169,6 +182,23 @@ function Cart() {
                       >
                         ₹{price}
                       </p>
+                      <div className="mt-1">
+                        <label className="mr-2 text-sm font-semibold text-gray-700">
+                          Quantity:
+                        </label>
+                        <input
+                          type="number"
+                          value={item.quantity} // Display the quantity from the Redux store
+                          min="1" // Set minimum quantity to 1
+                          onChange={(e) =>
+                            handleQuantityChange(
+                              item.id,
+                              parseInt(e.target.value)
+                            )
+                          } // Handle quantity change
+                          className="w-16 px-2 py-1 border rounded-md focus:outline-none focus:border-blue-500"
+                        />
+                      </div>
                     </div>
                     <div
                       onClick={() => deleteCart(item)}
