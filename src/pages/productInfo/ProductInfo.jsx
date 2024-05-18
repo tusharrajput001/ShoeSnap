@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { addToCart } from "../../redux/cartSlice";
 import { fireDB } from "../../fireabase/FirebaseConfig";
 import StarRatings from 'react-star-ratings';
+import './ProductInfor.css'
 
 function ProductInfo() {
   const context = useContext(myContext);
@@ -20,14 +21,21 @@ function ProductInfo() {
   const [reviewContent, setReviewContent] = useState('');
   const [feedbackContent, setFeedbackContent] = useState(""); 
   const [rating, setRating] = useState(0);
+  const [selectedSize, setSelectedSize] = useState(null); // State to track selected shoe size
 
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart);
 
   // Add to cart
   const addCart = (products) => {
-    dispatch(addToCart(products));
-    toast.success("Added to cart");
+    // Ensure a size is selected before adding to cart
+    if (selectedSize) {
+      const productToAdd = { ...products, size: selectedSize }; // Include selected size in product data
+      dispatch(addToCart(productToAdd));
+      toast.success("Added to cart");
+    } else {
+      toast.error("Please select a size before adding to cart");
+    }
   };
 
   useEffect(() => {
@@ -82,12 +90,17 @@ function ProductInfo() {
     getReviews();
   }, [params.id]);
 
+  // Function to handle change in selected shoe size
+  const handleSizeChange = (size) => {
+    setSelectedSize(size);
+  };
+
   return (
     <Layout>
       <section className="text-gray-600 body-font overflow-hidden">
         <div className="container px-5 py-10 mx-auto">
           {products && (
-            <div className="lg:w-4/5 mx-auto flex flex-wrap">
+            <div className="lg:w-5/5 mx-auto flex flex-wrap">
               <img
                 alt="ecommerce"
                 className="lg:w-1/3 w-full lg:h-auto object-cover object-center rounded"
@@ -114,6 +127,45 @@ function ProductInfo() {
                     </ul>
                   </div>
                 )}
+        <h3 className="font-bold pb-3">Shoe Size Chart</h3>
+      <div className="shoe-size-chart mb-5">
+
+        <div className="size-row p-2 text-center">
+        <div
+            className={`w-10 h-10  size-option ${selectedSize === "6" ? 'selected' : ''}`}
+            onClick={() => handleSizeChange("6")}
+          >
+            <p>6</p>
+          </div>
+          <div
+            className={`w-10 h-10 size-option ${selectedSize === "7" ? 'selected' : ''}`}
+            onClick={() => handleSizeChange("7")}
+          >
+            <p>7</p>
+          </div>
+          <div
+            className={`w-10 h-10 size-option ${selectedSize === "8" ? 'selected' : ''}`}
+            onClick={() => handleSizeChange("8")}
+          >
+            <p>8</p>
+          </div>
+          <div
+            className={`w-10 h-10 size-option ${selectedSize === "9" ? 'selected' : ''}`}
+            onClick={() => handleSizeChange("9")}
+          >
+            <p>9</p>
+          </div>
+          <div
+            className={`w-10 h-10 size-option ${selectedSize === "10" ? 'selected' : ''}`}
+            onClick={() => handleSizeChange("10")}
+          >
+            <p>10</p>
+          </div>
+
+        </div>
+      </div>
+
+
 
                 <div className="flex">
                   <span className="title-font font-medium text-2xl text-gray-900">
@@ -146,7 +198,7 @@ function ProductInfo() {
                             starSpacing="0"
                             svgIconPath= "M9.5 14.25l-5.584 2.936 1.066-6.218L.465 6.564l6.243-.907L9.5 0l2.792 5.657 6.243.907-4.517 4.404 1.066 6.218"
                           />
-                        </div>
+                         </div>
                         <p className="text-gray-600 mb-2">
                           {users[review.userId]?.name || "Anonymous"}
                         </p>

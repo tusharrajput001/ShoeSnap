@@ -1,0 +1,24 @@
+.shoe-size-chart {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    width: fit-content;
+  }
+  
+  .size-row {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .size-option {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .size-option.selected {
+    border-color: blue;
+    background-color: #f0f0f0;
+  }
+  
