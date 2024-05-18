@@ -149,7 +149,7 @@ function ProductInfo() {
         </div>
       </div>
       {/* Quantity selection */}
-      <div className="mb-4">
+      {/* <div className="mb-4">
         <label className="font-bold mr-2">Quantity:</label>
         <input
           type="number"
@@ -158,7 +158,7 @@ function ProductInfo() {
           onChange={handleQuantityChange}
           className="border rounded p-1 w-20"
         />
-      </div>
+      </div> */}
                 <div className="flex">
                   <span className="title-font font-medium text-2xl text-gray-900">
                     ₹{products.price}
@@ -192,7 +192,7 @@ function ProductInfo() {
                           />
                          </div>
                         <p className="text-gray-600 mb-2">
-                          {users[review.userId]?.name || "Anonymous"}
+                          {users[review.userId]?.name || "Buyer"}
                         </p>
                         <p>{review.feedback}</p>
                       </div>

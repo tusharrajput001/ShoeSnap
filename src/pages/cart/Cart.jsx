@@ -137,7 +137,7 @@ function Cart() {
               return (
                 <div
                   key={index}
-                  className="justify-between mb-6 rounded-lg border drop-shadow-xl bg-white p-6 sm:flex sm:justify-start"
+                  className="justify-between mb-6 h-60 rounded-lg border drop-shadow-xl bg-white p-6 sm:flex sm:justify-start"
                   style={{
                     backgroundColor: mode === "dark" ? "rgb(32 33 34)" : "",
                     color: mode === "dark" ? "white" : "",
@@ -149,26 +149,26 @@ function Cart() {
                     className="w-full rounded-lg sm:w-40"
                   />
                   <div className="sm:ml-4 sm:flex sm:w-full sm:justify-between">
-                    <div className="mt-5 sm:mt-0">
+                    <div className="mt-3 sm:mt-0">
                       <h2
                         className="text-lg font-bold text-gray-900"
                         style={{ color: mode === "dark" ? "white" : "" }}
                       >
                         {title}
                       </h2>
-                      <h2
+                      {/* <h2
                         className="text-sm text-gray-900"
                         style={{ color: mode === "dark" ? "white" : "" }}
                       >
                         {description}
-                      </h2>
+                      </h2> */}
                       <p
-                        className="mt-1 text-xs font-semibold text-gray-700"
+                        className="mt-3 text-md font-semibold text-gray-700"
                         style={{ color: mode === "dark" ? "white" : "" }}
                       >
                         ₹{price}
                       </p>
-                      <div className="mt-1">
+                      <div className="mt-3">
                         <label className="mr-2 text-sm font-semibold text-gray-700">
                           Quantity:
                         </label>
