@@ -1,10 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
-import myContext from "../../context/data/myContext";
+// Cart.js
+import React, { useEffect, useState, useContext } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteFromCart, updateCartItemQuantity } from "../../redux/cartSlice";
+import { toast } from "react-toastify";
 import Layout from "../../components/layout/Layout";
 import Modal from "../../components/modal/Modal";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteFromCart } from "../../redux/cartSlice";
-import { toast } from "react-toastify";
+import myContext from "../../context/data/myContext";
 import { addDoc, collection } from "firebase/firestore";
 import { fireDB } from "../../fireabase/FirebaseConfig";
 
@@ -13,38 +14,37 @@ function Cart() {
   const { mode } = context;
 
   const dispatch = useDispatch();
-
   const cartItems = useSelector((state) => state.cart);
-  // console.log(cartItems)
 
   const deleteCart = (item) => {
     dispatch(deleteFromCart(item));
     toast.success("Delete cart");
   };
 
+  const handleQuantityChange = (id, quantity) => {
+    if (quantity < 1) return; // prevent quantity from being less than 1
+    dispatch(updateCartItemQuantity({ id, quantity }));
+  };
+
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cartItems));
   }, [cartItems]);
 
-  const [totalAmout, setTotalAmount] = useState(0);
+  const [totalAmount, setTotalAmount] = useState(0);
 
   useEffect(() => {
     let temp = 0;
     cartItems.forEach((cartItem) => {
       const price = parseFloat(cartItem.price.replace(/[₹,]/g, ""));
       if (!isNaN(price)) {
-        temp += price;
+        temp += price * cartItem.quantity; // Multiply price by quantity
       }
     });
     setTotalAmount(temp);
   }, [cartItems]);
 
-  const shipping = parseInt(100);
-
-  const grandTotal = shipping + totalAmout;
-  // console.log(grandTotal)
-
-  /** Payment Intigration  **/
+  const shipping = 100;
+  const grandTotal = shipping + totalAmount;
 
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
@@ -52,7 +52,7 @@ function Cart() {
   const [phoneNumber, setPhoneNumber] = useState("");
 
   const buyNow = async () => {
-    if (name === "" || address == "" || pincode == "" || phoneNumber == "") {
+    if (!name || !address || !pincode || !phoneNumber) {
       return toast.error("All fields are required", {
         position: "top-center",
         autoClose: 1000,
@@ -78,15 +78,14 @@ function Cart() {
     };
 
     var options = {
-      key: "rzp_test_U8A2AwRRntEltL", // Replace with your actual Razorpay key ID
-      key_secret: "sbLh8hGAcG7pavdBLp2qHwBG", // Replace with your actual Razorpay key secret
+      key: "rzp_test_U8A2AwRRntEltL",
+      key_secret: "sbLh8hGAcG7pavdBLp2qHwBG",
       amount: parseInt(grandTotal * 100),
       currency: "INR",
       order_receipt: "order_rcptid_" + name,
       name: "ShoeSnap",
       description: "for testing purpose",
       handler: function (response) {
-        // console.log(response)
         toast.success("Payment Successful");
 
         const paymentId = response.razorpay_payment_id;
@@ -112,7 +111,6 @@ function Cart() {
           console.log(error);
         }
       },
-
       theme: {
         color: "#3399cc",
       },
@@ -120,38 +118,26 @@ function Cart() {
 
     var pay = new window.Razorpay(options);
     pay.open();
-    // console.log(pay)
   };
 
-  // price update according to qty
-  useEffect(() => {
-    let temp = 0;
-    cartItems.forEach((cartItem) => {
-      const price = parseFloat(cartItem.price.replace(/[₹,]/g, ""));
-      const quantity = cartItem.quantity; // Get the quantity of the item
-      if (!isNaN(price) && !isNaN(quantity)) {
-        temp += price * quantity; // Multiply price by quantity
-      }
-    });
-    setTotalAmount(temp);
-  }, [cartItems]);
   return (
     <Layout>
       <div
-        className="min-h-screen bg-gray-100 pt-5 mb-[0%] "
+        className="min-h-screen bg-gray-100 pt-5 mb-[0%]"
         style={{
           backgroundColor: mode === "dark" ? "#282c34" : "",
           color: mode === "dark" ? "white" : "",
         }}
       >
         <h1 className="mb-10 text-center text-2xl font-bold">Cart Items</h1>
-        <div className="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0 ">
-          <div className="rounded-lg md:w-2/3 ">
+        <div className="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
+          <div className="rounded-lg md:w-2/3">
             {cartItems.map((item, index) => {
-              const { title, price, description, imageUrl } = item;
+              const { title, price, description, imageUrl, id, quantity } = item;
               return (
                 <div
-                  className="justify-between mb-6 rounded-lg border  drop-shadow-xl bg-white p-6  sm:flex  sm:justify-start"
+                  key={index}
+                  className="justify-between mb-6 rounded-lg border drop-shadow-xl bg-white p-6 sm:flex sm:justify-start"
                   style={{
                     backgroundColor: mode === "dark" ? "rgb(32 33 34)" : "",
                     color: mode === "dark" ? "white" : "",
@@ -171,7 +157,7 @@ function Cart() {
                         {title}
                       </h2>
                       <h2
-                        className="text-sm  text-gray-900"
+                        className="text-sm text-gray-900"
                         style={{ color: mode === "dark" ? "white" : "" }}
                       >
                         {description}
@@ -188,14 +174,11 @@ function Cart() {
                         </label>
                         <input
                           type="number"
-                          value={item.quantity} // Display the quantity from the Redux store
-                          min="1" // Set minimum quantity to 1
+                          value={quantity}
+                          min="1"
                           onChange={(e) =>
-                            handleQuantityChange(
-                              item.id,
-                              parseInt(e.target.value)
-                            )
-                          } // Handle quantity change
+                            handleQuantityChange(id, parseInt(e.target.value))
+                          }
                           className="w-16 px-2 py-1 border rounded-md focus:outline-none focus:border-blue-500"
                         />
                       </div>
@@ -215,7 +198,7 @@ function Cart() {
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                          d="M6 18L18 6M6 6l12 12"
                         />
                       </svg>
                     </div>
@@ -224,71 +207,114 @@ function Cart() {
               );
             })}
           </div>
-
           <div
-            className="mt-6 h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 md:w-1/3"
+            className="mt-6 h-full rounded-lg border bg-white p-6 drop-shadow-xl md:mt-0 md:w-1/3"
             style={{
               backgroundColor: mode === "dark" ? "rgb(32 33 34)" : "",
               color: mode === "dark" ? "white" : "",
             }}
           >
             <div className="mb-2 flex justify-between">
-              <p
-                className="text-gray-700"
-                style={{ color: mode === "dark" ? "white" : "" }}
-              >
+              <p className="text-gray-700" style={{ color: mode === "dark" ? "white" : "" }}>
                 Subtotal
               </p>
-              <p
-                className="text-gray-700"
-                style={{ color: mode === "dark" ? "white" : "" }}
-              >
-                ₹{totalAmout}
+              <p className="text-gray-700" style={{ color: mode === "dark" ? "white" : "" }}>
+                ₹{totalAmount}
               </p>
             </div>
             <div className="flex justify-between">
-              <p
-                className="text-gray-700"
-                style={{ color: mode === "dark" ? "white" : "" }}
-              >
+              <p className="text-gray-700" style={{ color: mode === "dark" ? "white" : "" }}>
                 Shipping
               </p>
-              <p
-                className="text-gray-700"
-                style={{ color: mode === "dark" ? "white" : "" }}
-              >
-                ₹{shipping}
+              <p className="text-gray-700" style={{ color: mode === "dark" ? "white" : "" }}>
+                ₹100
               </p>
             </div>
             <hr className="my-4" />
-            <div className="flex justify-between mb-3">
-              <p
-                className="text-lg font-bold"
-                style={{ color: mode === "dark" ? "white" : "" }}
-              >
-                Total
+            <div className="flex justify-between">
+              <p className="text-lg font-bold" style={{ color: mode === "dark" ? "white" : "" }}>
+                Total Amount
               </p>
-              <div className>
-                <p
-                  className="mb-1 text-lg font-bold"
-                  style={{ color: mode === "dark" ? "white" : "" }}
-                >
+              <div>
+                <p className="mb-1 text-lg font-bold" style={{ color: mode === "dark" ? "white" : "" }}>
                   ₹{grandTotal}
                 </p>
               </div>
             </div>
-            {/* <Modal  /> */}
-            <Modal
-              name={name}
-              address={address}
-              pincode={pincode}
-              phoneNumber={phoneNumber}
-              setName={setName}
-              setAddress={setAddress}
-              setPincode={setPincode}
-              setPhoneNumber={setPhoneNumber}
-              buyNow={buyNow}
-            />
+            <div className="mt-4">
+              <form
+                className="space-y-4"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  buyNow();
+                }}
+              >
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="address" className="block text-sm font-medium text-gray-700">
+                    Address
+                  </label>
+                  <input
+                    type="text"
+                    id="address"
+                    name="address"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="pincode" className="block text-sm font-medium text-gray-700">
+                    Pincode
+                  </label>
+                  <input
+                    type="text"
+                    id="pincode"
+                    name="pincode"
+                    value={pincode}
+                    onChange={(e) => setPincode(e.target.value)}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">
+                    Phone Number
+                  </label>
+                  <input
+                    type="text"
+                    id="phoneNumber"
+                    name="phoneNumber"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    required
+                  />
+                </div>
+                <div className="flex justify-center">
+                  <button
+                    type="submit"
+                    className="mt-4 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
+                    Place Order
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
