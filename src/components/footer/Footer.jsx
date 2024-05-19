@@ -1,37 +1,52 @@
-  import React from 'react'
-  import './footer.css'
-  import {Link } from 'react-router-dom'
-  import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-  import { faInstagram, faFacebook, faTwitter, faYoutube } from '@fortawesome/free-brands-svg-icons';
+import React from 'react';
+import './Footer.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
-  function Footer() {
-    return (
-      <>
-      <footer className='footer-sec'>
-          <h1 className='footer-head'>ShoeSnap ©️</h1>
-          <nav className='footer-nav'>
-              <a><Link to='/'>Home</Link></a> 
-              <a><Link to='/allproducts'>Explore</Link></a>
-              <a><Link to='/order'>MyOrders</Link></a>
-              <a><Link to='/Contact'>Contact Us</Link></a>
-          </nav>
-          <div className='foot-list'>
-            <FontAwesomeIcon icon={faInstagram} className="fa-2x icons-cols" />
-            <FontAwesomeIcon icon={faFacebook} className="fa-2x icons-cols" />
-            <FontAwesomeIcon icon={faTwitter} className="fa-2x icons-cols" />
-            <FontAwesomeIcon icon={faYoutube} className="fa-2x icons-cols" />
-            
+
+const Footer = () => {
+  return (
+    <footer className="footer">
+      <div className="container row">
+        <div className="footer-col">
+          <h4>company</h4>
+          <ul>
+            <li><a href="#">about us</a></li>
+            <li><a href="#">our services</a></li>
+            <li><a href="#">privacy policy</a></li>
+            <li><a href="#">visit website</a></li>
+          </ul>
         </div>
+        <div className="footer-col">
+          <h4>get help</h4>
+          <ul>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">shipping</a></li>
+            <li><a href="#">returns</a></li>
+            <li><a href="#">order status</a></li>
+            <li><a href="#">payment options</a></li>
+          </ul>
+        </div>
+        <div className="footer-col">
+          <h4>Shoe Snap</h4>
+          <ul>
+            <li><a href="#">download</a></li>
+            <li><a href="#">changelog</a></li>
+            <li><a href="#">github</a></li>
+            <li><a href="#">all version</a></li>
+          </ul>
+        </div>
+        <div className="footer-col">
+          <h4>follow us</h4>
+          <div className="social-links">
+            <a href="#"><i className="fa-brands fa-facebook-f"></i></a>
+            <a href="#"><i className="fa-brands fa-x-twitter"></i></a>
+            <a href="#"><i className="fa-brands fa-instagram"></i></a>
+            <a href="#"><i className="fa-brands fa-linkedin-in"></i></a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
 
-
-          <p className='copyright-sec'>© 2024 ShoeSnap. All rights reserved.</p>
-      </footer>
-
-
-
-
-      </>
-    )
-  }
-
-  export default Footer
+export default Footer;
