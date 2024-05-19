@@ -1,13 +1,12 @@
-// Cart.js
 import React, { useEffect, useState, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteFromCart, updateCartItemQuantity } from "../../redux/cartSlice";
+import { deleteFromCart, updateCartItemQuantity, updateCartItemSize } from "../../redux/cartSlice";
 import { toast } from "react-toastify";
 import Layout from "../../components/layout/Layout";
-import Modal from "../../components/modal/Modal";
 import myContext from "../../context/data/myContext";
 import { addDoc, collection } from "firebase/firestore";
 import { fireDB } from "../../fireabase/FirebaseConfig";
+import { useLocation } from "react-router-dom";
 
 function Cart() {
   const context = useContext(myContext);
@@ -40,16 +39,19 @@ function Cart() {
         temp += price * cartItem.quantity; // Multiply price by quantity
       }
     });
-    setTotalAmount(temp);
+    setTotalAmount(temp); 
   }, [cartItems]);
 
-  const shipping = 100;
+  const shipping = 99;
   const grandTotal = shipping + totalAmount;
 
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [pincode, setPincode] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState(""); 
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const selectedSizeParam = parseInt(searchParams.get("size")) || 6; // Default to 6 if not found
 
   const buyNow = async () => {
     if (!name || !address || !pincode || !phoneNumber) {
@@ -120,6 +122,10 @@ function Cart() {
     pay.open();
   };
 
+  const handleSizeChange = (id, size) => {
+    dispatch(updateCartItemSize({ id, size }));
+  };
+  
   return (
     <Layout>
       <div
@@ -133,7 +139,7 @@ function Cart() {
         <div className="mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0">
           <div className="rounded-lg md:w-2/3">
             {cartItems.map((item, index) => {
-              const { title, price, description, imageUrl, id, quantity } = item;
+              const { title, price, description, imageUrl, id, quantity, size } = item;
               return (
                 <div
                   key={index}
@@ -149,26 +155,21 @@ function Cart() {
                     className="w-full rounded-lg sm:w-40"
                   />
                   <div className="sm:ml-4 sm:flex sm:w-full sm:justify-between">
-                    <div className="mt-3 sm:mt-0">
+                    <div className="mt-0 sm:mt-0">  
                       <h2
                         className="text-lg font-bold text-gray-900"
                         style={{ color: mode === "dark" ? "white" : "" }}
                       >
                         {title}
                       </h2>
-                      {/* <h2
-                        className="text-sm text-gray-900"
-                        style={{ color: mode === "dark" ? "white" : "" }}
-                      >
-                        {description}
-                      </h2> */}
+
                       <p
-                        className="mt-3 text-md font-semibold text-gray-700"
+                        className="mt-1 text-md font-semibold text-gray-700"
                         style={{ color: mode === "dark" ? "white" : "" }}
                       >
                         ₹{price}
                       </p>
-                      <div className="mt-3">
+                      <div className="mt-1">
                         <label className="mr-2 text-sm font-semibold text-gray-700">
                           Quantity:
                         </label>
@@ -179,10 +180,23 @@ function Cart() {
                           onChange={(e) =>
                             handleQuantityChange(id, parseInt(e.target.value))
                           }
-                          className="w-16 px-2 py-1 border rounded-md focus:outline-none focus:border-blue-500"
+                          className="w-14 px-2 py-1 border rounded-md focus:outline-none focus:border-blue-500"
                         />
                       </div>
+                      <div className="mt-1">
+                        <h3 className="font-bold text-sm pb-2">Shoe Size Chart</h3>
+                        <div className="shoe-size-chart mb-0">
+                          <div className="size-row p-0 text-xs text-center">
+                            {[6, 7, 8, 9, 10].map((sizeOption) => (
+                              <div key={sizeOption} className={`w-8 h-8 size-option ${size === sizeOption ? 'selected' : ''}`} onClick={() => handleSizeChange(id, sizeOption)}>
+                                <p>{sizeOption}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
                     </div>
+                    
                     <div
                       onClick={() => deleteCart(item)}
                       className="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6"
@@ -219,7 +233,7 @@ function Cart() {
                 Subtotal
               </p>
               <p className="text-gray-700" style={{ color: mode === "dark" ? "white" : "" }}>
-                ₹{totalAmount}
+                ₹{totalAmount.toFixed(2)}
               </p>
             </div>
             <div className="flex justify-between">
@@ -227,93 +241,58 @@ function Cart() {
                 Shipping
               </p>
               <p className="text-gray-700" style={{ color: mode === "dark" ? "white" : "" }}>
-                ₹100
+                ₹{shipping.toFixed(2)}
               </p>
             </div>
             <hr className="my-4" />
             <div className="flex justify-between">
               <p className="text-lg font-bold" style={{ color: mode === "dark" ? "white" : "" }}>
-                Total Amount
+                Total
               </p>
-              <div>
-                <p className="mb-1 text-lg font-bold" style={{ color: mode === "dark" ? "white" : "" }}>
-                  ₹{grandTotal}
+              <div className="">
+                <p
+                  className="mb-1 text-lg font-bold"
+                  style={{ color: mode === "dark" ? "white" : "" }}
+                >
+                  ₹{grandTotal.toFixed(2)} INR
                 </p>
               </div>
             </div>
-            <div className="mt-4">
-              <form
-                className="space-y-4"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  buyNow();
-                }}
+
+            <div className="flex flex-col space-y-4"> 
+              <input
+                type="text"
+                className="p-2 border border-gray-300 rounded"
+                placeholder="Enter your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <textarea
+                className="p-2 border border-gray-300 rounded"
+                placeholder="Enter your address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+              ></textarea>
+              <input
+                type="text"
+                className="p-2 border border-gray-300 rounded"
+                placeholder="Enter your pincode"
+                value={pincode}
+                onChange={(e) => setPincode(e.target.value)}
+              />
+              <input
+                type="text"
+                className="p-2 border border-gray-300 rounded"
+                placeholder="Enter your phone number"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+              />
+              <button
+                onClick={buyNow}
+                className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
               >
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    required
-                  />
-                </div>
-                <div>
-                  <label htmlFor="address" className="block text-sm font-medium text-gray-700">
-                    Address
-                  </label>
-                  <input
-                    type="text"
-                    id="address"
-                    name="address"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    required
-                  />
-                </div>
-                <div>
-                  <label htmlFor="pincode" className="block text-sm font-medium text-gray-700">
-                    Pincode
-                  </label>
-                  <input
-                    type="text"
-                    id="pincode"
-                    name="pincode"
-                    value={pincode}
-                    onChange={(e) => setPincode(e.target.value)}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    required
-                  />
-                </div>
-                <div>
-                  <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">
-                    Phone Number
-                  </label>
-                  <input
-                    type="text"
-                    id="phoneNumber"
-                    name="phoneNumber"
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    required
-                  />
-                </div>
-                <div className="flex justify-center">
-                  <button
-                    type="submit"
-                    className="mt-4 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  >
-                    Place Order
-                  </button>
-                </div>
-              </form>
+                Buy Now
+              </button>
             </div>
           </div>
         </div>
