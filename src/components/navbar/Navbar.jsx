@@ -14,8 +14,6 @@ function Navbar() {
 
   const user = JSON.parse(localStorage.getItem("user"));
 
-  // console.log(user.user.email)
-
   const logout = () => {
     localStorage.clear("user");
     window.location.href = "/login";
@@ -25,14 +23,14 @@ function Navbar() {
 
   const handleCartClick = () => {
     if (!user) {
-      // Redirect user to login page if not logged in
       window.location.href = '/login';
     } else {
-      // Handle cart click as usual
       window.location.href = '/cart';
     }
   };
-  
+
+  const isAdmin = user?.user?.email === "tusharr0491@gmail.com";
+
   return (
     <div className="bg-white sticky top-0 z-50">
       <Transition.Root show={open} as={Fragment}>
@@ -85,7 +83,7 @@ function Navbar() {
                     All Products
                   </Link>
 
-                  {user ? (
+                  {user && !isAdmin && (
                     <div className="flow-root">
                       <Link
                         to={"/order"}
@@ -95,22 +93,18 @@ function Navbar() {
                         Order
                       </Link>
                     </div>
-                  ) : (
-                    ""
                   )}
 
-                  {user?.user?.email === "tusharr0491@gmail.com" ? (
+                  {isAdmin && (
                     <div className="flow-root">
                       <Link
                         to={"/dashboard"}
                         className="-m-2 block p-2 font-medium text-gray-900"
                         style={{ color: mode === "dark" ? "white" : "" }}
                       >
-                        admin
+                        Admin
                       </Link>
                     </div>
-                  ) : (
-                    ""
                   )}
 
                   {user ? (
@@ -147,23 +141,6 @@ function Navbar() {
                     </Link>
                   </div>
                 </div>
-{/* 
-                <div className="border-t border-gray-200 px-4 py-6">
-                  <a href="#" className="-m-2 flex items-center p-2">
-                    <img
-                      src="img/indiaflag.png"
-                      alt=""
-                      className="block h-auto w-5 flex-shrink-0"
-                    />
-                    <span
-                      className="ml-3 block text-base font-medium text-gray-900"
-                      style={{ color: mode === "dark" ? "white" : "" }}
-                    >
-                      INDIA
-                    </span>
-                    <span className="sr-only">, change currency</span>
-                  </a>
-                </div> */}
               </Dialog.Panel>
             </Transition.Child>
           </div>
@@ -171,11 +148,6 @@ function Navbar() {
       </Transition.Root>
 
       <header className="relative bg-white">
-        {/* <p className="flex h-10 items-center justify-center bg-customOrange px-4 text-sm font-medium text-white sm:px-6 lg:px-8" 
-        style={{ backgroundColor: mode === 'dark' ? 'rgb(62 64 66)' : '', color: mode === 'dark' ? 'white' : '', }}>
-          Get free delivery on orders over ₹300
-        </p> */}
-
         <nav
           aria-label="Top"
           className="bg-gray-100 px-4 sm:px-6 lg:px-8 shadow-xl "
@@ -212,7 +184,6 @@ function Navbar() {
                 </svg>
               </button>
 
-              {/* Logo */}
               <div className="ml-4 flex lg:ml-0">
                 <Link to={"/"} className="flex">
                   <div className="flex ">
@@ -235,25 +206,47 @@ function Navbar() {
                   >
                     Explore
                   </Link>
-                  {user ? (
-                    <Link
-                      to={"/order"}
-                      className="text-lg font-medium text-gray-700 "
-                      style={{ color: mode === "dark" ? "white" : "" }}
-                    >
-                      Order
-                    </Link>
-                  ) : (
-                    <Link
-                      to={"/signup"}
-                      className="text-lg font-medium text-gray-700 "
-                      style={{ color: mode === "dark" ? "white" : "" }}
-                    >
-                      Signup
-                    </Link>
+                  {user && !isAdmin && (
+                    <>
+                      <Link
+                        to={"/order"}
+                        className="text-lg font-medium text-gray-700 "
+                        style={{ color: mode === "dark" ? "white" : "" }}
+                      >
+                        Order
+                      </Link>
+                      <Link
+                        to={"/account"}
+                        className="text-lg font-medium text-gray-700 "
+                        style={{ color: mode === "dark" ? "white" : "" }}
+                      >
+                        Account
+                      </Link>
+                      <button
+                        onClick={handleCartClick}
+                        className="group -m-2 flex items-center p-2"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="w-6 h-6"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M9 19.5a3 3 0 01-6 0m6 0a3 3 0 106 0m-6 0h6"
+                          />
+                        </svg>
+                        <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
+                          {cartItems.length}
+                        </span>
+                      </button>
+                    </>
                   )}
-
-                  {user?.user?.email === "tusharr0491@gmail.com" ? (
+                  {isAdmin && (
                     <Link
                       to={"/dashboard"}
                       className="text-lg font-medium text-gray-700 "
@@ -261,73 +254,38 @@ function Navbar() {
                     >
                       Admin
                     </Link>
-                  ) : (
-                    ""
                   )}
-
                   {user ? (
                     <a
                       onClick={logout}
-                      className="text-lg font-medium text-gray-700 cursor-pointer  "
+                      className="text-lg font-medium text-gray-700 cursor-pointer"
                       style={{ color: mode === "dark" ? "white" : "" }}
                     >
                       Logout
                     </a>
                   ) : (
-                    ""
+                    <>
+                      <Link
+                        to={"/login"}
+                        className="text-lg font-medium text-gray-700 "
+                        style={{ color: mode === "dark" ? "white" : "" }}
+                      >
+                        Login
+                      </Link>
+                      <span
+                        className="h-6 w-px bg-gray-200"
+                        aria-hidden="true"
+                      />
+                      <Link
+                        to={"/signup"}
+                        className="text-lg font-medium text-gray-700 "
+                        style={{ color: mode === "dark" ? "white" : "" }}
+                      >
+                        Signup
+                      </Link>
+                    </>
                   )}
                 </div>
-
-                <div className="hidden lg:ml-8 lg:flex">
-                  <Link
-                    to={"/account"}
-                    className="flex items-center text-gray-700 "
-                  >
-                    <img
-                      className="inline-block w-10 h-10 rounded-full"
-                      src="https://imgs.search.brave.com/LHP3bTuTj_Y8n53k52l7ZKQLvGPYc9UWzcAaI_iCqvs/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTE2/Mjc5ODM5NC92ZWN0/b3IvcHJvZmlsZS1w/aWN0dXJlLXZlY3Rv/ci1pbGx1c3RyYXRp/b24uanBnP3M9NjEy/eDYxMiZ3PTAmaz0y/MCZjPW05OVRPUEMw/RUJFT24tZk1xWnZH/bEJXUkJZa1dDWEYw/T2pWTG9JTENhd0U9"
-                      alt="Dan_Abromov"
-                    />
-                  </Link>
-                </div>
-
-                {/* <div className="flex lg:ml-6">
-                  <button className='' onClick={toggleMode}>
-                    {mode === 'light' ?
-                      (<FiSun className='' size={30} />
-                      ) : 'dark' ?
-                        (<BsFillCloudSunFill size={30} />
-                        ) : ''}
-                  </button>
-                </div> */}
-
-                {/* Cart */}
-                {/* Cart /}
-                <div className="ml-4 flow-root lg:ml-6">
-                  {/ Call handleCartClick function on cart button click */}
-                <button
-                  onClick={handleCartClick}
-                  className="group -m-2 flex items-center p-2"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-6 h-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
-                    />
-                  </svg>
-                  <span className="ml-2 text-sm font-medium text-gray-700 group-">
-                    {cartItems.length}
-                  </span>
-                  <span className="sr-only">items in cart, view bag</span>
-                </button>
               </div>
             </div>
           </div>

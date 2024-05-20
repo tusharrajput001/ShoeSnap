@@ -1,9 +1,7 @@
 import React, { useContext } from "react";
 import Layout from "../../components/layout/Layout";
-
 import HeroSection from "../../components/heroSection/HeroSection";
 import ProductCard from "../../components/productCard/ProductCard";
-
 import { Link } from "react-router-dom";
 import HomeSearch from "../../components/filter/HomeSearch";
 import Partners from "../../components/Partners/partners";
@@ -22,10 +20,8 @@ function Home() {
           </button>
         </Link>
       </div>
-      {/* <Track /> */}
       <Partners />
       <ClientReviews />
-      {/* <Testimonial /> */}
     </Layout>
   );
 }
