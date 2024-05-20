@@ -3,10 +3,17 @@ import myContext from '../../context/data/myContext';
 
 function Filter() {
     const context = useContext(myContext);
-    const { mode, searchkey, setSearchkey, filterType, setFilterType, product } = context;
+    const { mode, searchkey, setSearchkey, filterType, setFilterType, product, setFilteredProducts } = context;
 
     // Extract unique categories from product array
     const uniqueCategories = [...new Set(product.map(item => item.category))];
+
+    // Function to reset the filter
+    const resetFilter = () => {
+        setSearchkey(''); // Reset search key
+        setFilterType(''); // Reset filter type
+        setFilteredProducts([]); // Reset filtered products
+    };
 
     return (
         <div>
@@ -37,7 +44,9 @@ function Filter() {
                             Filters
                         </p>
                         <button className="px-4 py-2 bg-gray-50 hover:bg-gray-200 text-gray-800 text-sm font-medium rounded-md"
-                            style={{ color: mode === 'dark' ? 'white' : '' }}>
+                            style={{ color: mode === 'dark' ? 'white' : '' }}
+                            onClick={resetFilter} // Call resetFilter function on button click
+                        >
                             Reset Filter
                         </button>
                     </div>
