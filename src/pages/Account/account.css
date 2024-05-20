@@ -65,30 +65,56 @@
   justify-content: space-around;
   width: 100%;
   max-width: 1200px; /* Adjust the maximum width */
-  margin: 0 auto;
+  margin: 20px auto; /* Add margin for spacing */
+  border-radius: 10px; /* Add border radius */
+  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); Add box shadow */
+  overflow: hidden;
 }
 
 .options-container div {
   flex: 0 0 30%; /* Adjust the width of each option */
   margin-bottom: 20px;
-  background-color: #3498db; /* Change the background color */
+  background-size: contain; /* Adjusted to contain */
+  background-repeat: no-repeat; /* Prevent image repetition */
+  background-position: center; /* Center the background image */
   border-radius: 10px; /* Add border radius */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add box shadow */
-  overflow: hidden;
+}
+
+.options-container div:nth-child(1) {
+  background-image: url('../../../public/bag.svg'); /* Specify the path to the bag image */
+}
+
+.options-container div:nth-child(2) {
+  background-image: url('../../../public/orders.svg'); /* Specify the path to the orders image */
+}
+
+.options-container div:nth-child(3) {
+  background-image: url('../../../public/explore.svg'); /* Specify the path to the explore image */
 }
 
 .options-container div a {
   display: block;
   padding: 100px;
-  text-align: center;
+  color: #00000067;
+  font-size: 32px;
+  font-weight: 900;
   font-family: monospace;
-  /* font-size:xx-large; */
-  color: #fff;
-  font-size: 28px;
+  text-align: center;
   text-decoration: none;
   transition: background-color 0.3s ease; /* Add transition */
 }
 
 .options-container div:hover {
-  background-color: #2980b9; /* Change the background color on hover */
+  background-color: rgba(0, 0, 0, 0.5); /* Change the background color on hover */
+}
+
+.options-container h1{
+  font-size: xx-large;
+  font-family: monospace;
+  text-align: center;
+  font-weight: 900;
+  color: #333333ca;
+  margin-top: 180px;
+  /* justify-content: center; */
 }
