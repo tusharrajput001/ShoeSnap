@@ -1,95 +1,94 @@
 .fullScreen {
-    display: flex;
-    flex-direction: column;
-    /* max-width: 100em; */
-    height: 100vh;
-    margin: auto;
-    color: white;
-  }
-  
-  .main-container {
-    width: 100%;
-    /* max-width: 100em; */
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .profileContainer {
-    width: 100%;
-    height: 50vh;
-    background-color: rgba(64, 74, 101, 0.658);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .profileImg {
-    width: 10em;
-    height: 10em;
-    border: 2px solid white;
-    border-radius: 50%; /* Ensure this is 50% for a circle */
-    overflow: hidden; /* Ensure the image doesn't overflow the container */
-  }
-  
-  .profileImg img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Cover ensures the image fills the container without stretching */
-  }
-  
-  .profileName {
-    margin: 2%;
-    font-size: xx-large;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f5f5f5; /* Change the background color */
+  color: #333; /* Change the text color */
+}
 
-  .btnLogout{
-    display: flex;
-    justify-content: center;
-    background-color: rgb(231, 122, 122);
-    border-radius: 50px;
-    padding: 10%;
-    width: 7em;
-    box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
-  }
-  .options-container {
-    width: 95%;
-    max-width: 100em;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    height: 70vh;
-  }
-  
-  .options-container div {
-    width: 30%;
-    border: 1px solid black;
-    cursor: pointer;
-    margin: auto;
-    height: 35vh;
-    font-size: 3.5em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white; /* Ensure the text is visible over the background */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Optional: Add a shadow to the text for better readability */
-    background-size: cover; /* Ensure the background image covers the entire div */
-    background-position: center; /* Center the background image */
-  }
-  
-  .options-container div:nth-child(1) {
-    background-image: url('https://img.freepik.com/free-vector/shopping-cart-realistic_1284-6011.jpg?t=st=1715685534~exp=1715689134~hmac=7f82e3c9a2f27c9d0bea1dd6d80eee91811e7650926eec4314026133cacdc94a&w=740');
-  }
-  
-  .options-container div:nth-child(2) {
-    background-image: url('https://img.freepik.com/free-vector/way-concept-illustration_114360-1191.jpg?t=st=1715685629~exp=1715689229~hmac=e01571ab88865cba4002608ee46123cb8901b9b7b1b1b4c388ca5314c9f0dddc&w=1380');
-  }
-  
-  .options-container div:nth-child(3) {
-    background-image: url('https://img.freepik.com/free-vector/curiosity-search-concept-illustration_114360-11031.jpg?t=st=1715685751~exp=1715689351~hmac=4593aa4293cfd55ca52534da144ae73c0a5622770c8673c888259b5506f58a4a&w=740');
-  }
-  
+.main-container {
+  width: 100%;
+  max-width: 1200px; /* Adjust the maximum width */
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.profileContainer {
+  width: 100%;
+  background-color: #fff; /* Change the background color */
+  border-radius: 10px; /* Add border radius */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add box shadow */
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.profileImg {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 20px;
+}
+
+.profileImg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profileName {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.btnLogout {
+  background-color: #ff6b6b; /* Change the button color */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Add transition */
+}
+
+.btnLogout:hover {
+  background-color: #e74c3c; /* Change the button color on hover */
+}
+
+.options-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 1200px; /* Adjust the maximum width */
+  margin: 0 auto;
+}
+
+.options-container div {
+  flex: 0 0 30%; /* Adjust the width of each option */
+  margin-bottom: 20px;
+  background-color: #3498db; /* Change the background color */
+  border-radius: 10px; /* Add border radius */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add box shadow */
+  overflow: hidden;
+}
+
+.options-container div a {
+  display: block;
+  padding: 100px;
+  text-align: center;
+  font-family: monospace;
+  /* font-size:xx-large; */
+  color: #fff;
+  font-size: 28px;
+  text-decoration: none;
+  transition: background-color 0.3s ease; /* Add transition */
+}
+
+.options-container div:hover {
+  background-color: #2980b9; /* Change the background color on hover */
+}

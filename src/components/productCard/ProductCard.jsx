@@ -22,12 +22,13 @@ function ProductCard() {
 
   const addCart = (product) => {
     dispatch(addToCart(product));
-    toast.success("add to cart");
+    toast.success("Added to cart");
   };
 
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cartItems));
   }, [cartItems]);
+
   return (
     <section className="text-gray-600 body-font">
       <div className="container px-5 py-8 md:py-16 mx-auto">
@@ -50,9 +51,9 @@ function ProductCard() {
             .map((item, index) => {
               const { title, price, description, imageUrl, id } = item;
               return (
-                <div key={index} className="p-4 md:w-1/4  drop-shadow-lg ">
+                <div key={index} className="p-4 md:w-1/2 lg:w-1/4 w-full drop-shadow-lg">
                   <div
-                    className="h-full  hover:shadow-gray-100 hover:shadow-2xl transition-shadow duration-300 ease-in-out     rounded-2xl overflow-hidden"
+                    className="h-full hover:shadow-gray-100 hover:shadow-2xl transition-shadow duration-300 ease-in-out rounded-2xl overflow-hidden"
                     style={{
                       backgroundColor: mode === "dark" ? "rgb(46 49 55)" : "",
                       color: mode === "dark" ? "white" : "",
@@ -65,9 +66,9 @@ function ProductCard() {
                       className="flex justify-center cursor-pointer"
                     >
                       <img
-                        className=" rounded-2xl w-full h-80 p-2 hover:scale-110 transition-scale-110  duration-300 ease-in-out"
+                        className="rounded-2xl w-full h-80 p-2 hover:scale-110 transition-transform duration-300 ease-in-out"
                         src={imageUrl}
-                        alt="blog"
+                        alt={title}
                       />
                     </div>
                     <div className="p-2">
@@ -83,18 +84,17 @@ function ProductCard() {
                       >
                         {title}
                       </h1>
-                      {/* <p className="leading-relaxed mb-3">{item.description.}</p> */}
                       <p
                         className="leading-relaxed mb-3"
                         style={{ color: mode === "dark" ? "white" : "" }}
                       >
                         ₹{price}
                       </p>
-                      <div className=" flex justify-center">
+                      <div className="flex justify-center">
                         <button
                           type="button"
                           onClick={() => addCart(item)}
-                          className="focus:outline-none text-white bg-customOrange hover:bg-customBlue focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm w-60 py-2    "
+                          className="focus:outline-none text-white bg-customOrange hover:bg-customBlue focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm w-60 py-2"
                         >
                           Add To Cart
                         </button>
