@@ -1,0 +1,13 @@
+.posterContainer{
+    display: flex;
+    padding: 12rem;
+    margin: auto;
+}
+
+.pos1{
+    padding-right: 40px;
+    width: 81%;
+}
+.pos2{
+    width: 47%;
+}

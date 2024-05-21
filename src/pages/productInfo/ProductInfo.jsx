@@ -15,7 +15,6 @@
   function ProductInfo() {
     const context = useContext(myContext);
     const { loading, setLoading } = context;
-
     const [reviews, setReviews] = useState([]);
     const [users, setUsers] = useState({});
     const [products, setProducts] = useState("");
@@ -106,7 +105,7 @@
               <div className="lg:w-5/5 mx-auto flex flex-wrap">
                 <img
                   alt="ecommerce"
-                  className="lg:w-1/3 w-full lg:h-auto object-cover object-center rounded"
+                  className="lg:w-1/2 w-full lg:h-auto object-cover object-center rounded"
                   src={products.imageUrl}
                 />
                 <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">

@@ -105,7 +105,9 @@ function HomePageProducts() {
               );
             })}
         </div>
+
       </div>
+
     </section>
   );
 }

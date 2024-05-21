@@ -3,6 +3,8 @@ import myContext from "../../context/data/myContext";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../redux/cartSlice";
 import { toast } from "react-toastify";
+import './ProductCard.css'
+import { Link } from "react-router-dom";
 
 function ProductCard() {
   const context = useContext(myContext);
@@ -31,6 +33,7 @@ function ProductCard() {
 
   return (
     <section className="text-gray-600 body-font">
+      
       <div className="container px-5 py-8 md:py-16 mx-auto">
         <div className="lg:w-1/2 w-full mb-6 lg:mb-10">
           <h1
@@ -105,7 +108,21 @@ function ProductCard() {
               );
             })}
         </div>
+        <div className="posterContainer">
+        <div className="pos1">
+          <Link to="http://localhost:5173/productinfo/tmzx38aNFtRCVubJaLce">
+          <img src="https://www.superkicks.in/cdn/shop/files/1_-_2024-03-22T160922.862.jpg?v=1711104022"/></Link>
+        </div>  
+        <div className="pos2">
+          <Link to="http://localhost:5173/productinfo/sZ8YbI0hQSeTJtQYd6dg">
+          <img src="https://www.superkicks.in/cdn/shop/files/2_330640fc-c4d2-43dd-b5bf-6ca72d4bd1f1.jpg?v=1715691054&width=493"/></Link>
+          <Link to="http://localhost:5173/productinfo/wVk0qkfptBwRfo8Iwyfa">
+          <img src="https://www.superkicks.in/cdn/shop/files/2_e9c117e9-3d5f-4f1f-81f6-228762cfcc62.jpg?v=1715607493&width=493"/>
+          </Link>
+        </div>
       </div>
+      </div>
+
     </section>
   );
 }
