@@ -208,6 +208,9 @@ function DashboardTab() {
                         Price
                       </th>
                       <th scope="col" className="px-6 py-3">
+                        Shoe Size
+                      </th>
+                      <th scope="col" className="px-6 py-3">
                         Qty. {/* Add Quantity column header */}
                       </th>
                       <th scope="col" className="px-6 py-3">
@@ -241,62 +244,65 @@ function DashboardTab() {
                     </tr>
                   </thead>
                   <tbody>
-                    {order.map((allorder, index) => {
-                      return allorder.cartItems.map((item, itemIndex) => {
-                        const {
-                          title,
-                          category,
-                          imageUrl,
-                          price,
-                          quantity // Add this line to destructure the quantity
-                        } = item;
-                        return (
-                          <tr
-                            key={itemIndex}
-                            className="bg-gray-50 border-b  dark:border-gray-700"
-                            style={{
-                              backgroundColor: mode === "dark" ? "rgb(46 49 55)" : "",
-                              color: mode === "dark" ? "white" : "",
-                            }}
-                          >
-                            <td className="px-6 py-4 text-black">
-                              {allorder.paymentId}
-                            </td>
-                            <td className="px-6 py-4 font-medium text-black whitespace-nowrap">
-                              <img className="w-16" src={imageUrl} alt="img" />
-                            </td>
-                            <td className="px-6 py-4 text-black">{title}</td>
+                  {order.map((allorder, index) => {
+                    return allorder.cartItems.map((item, itemIndex) => {
+                      const {
+                        title,
+                        category,
+                        imageUrl,
+                        price,
+                        quantity,
+                        size // Retrieve shoe size from cart item
+                      } = item;
+                      return (
+                        <tr
+                          key={itemIndex}
+                          className="bg-gray-50 border-b  dark:border-gray-700"
+                          style={{
+                            backgroundColor: mode === "dark" ? "rgb(46 49 55)" : "",
+                            color: mode === "dark" ? "white" : "",
+                          }}
+                        >
+                          <td className="px-6 py-4 text-black">
+                            {allorder.paymentId}
+                          </td>
+                          <td className="px-6 py-4 font-medium text-black whitespace-nowrap">
+                            <img className="w-16" src={imageUrl} alt="img" />
+                          </td>
+                          <td className="px-6 py-4 text-black">{title}</td>
+                          <td className="px-6 py-4 text-black">₹{price}</td>
+                          <td className="px-6 py-4 text-black">
+                            {size} {/* Display the shoe size */}
+                          </td>
+                          <td className="px-6 py-4 text-black">
+                            {item.quantity}
+                          </td>
+                          <td className="px-6 py-4 text-black">{category}</td>
 
-                            <td className="px-6 py-4 text-black">₹{price}</td>
-                            <td className="px-6 py-4 text-black">
-                              {item.quantity} {/* Display the quantity */}
-                            </td>
-                            <td className="px-6 py-4 text-black">{category}</td>
-                            <td className="px-6 py-4 text-black">
-                              {allorder.addressInfo.name}
-                            </td>
-                            <td className="px-6 py-4 text-black">
-                              {allorder.addressInfo.address}
-                            </td>
-                            <td className="px-6 py-4 text-black">
-                              {allorder.addressInfo.pincode}
-                            </td>
-                            <td className="px-6 py-4 text-black">
-                              {allorder.addressInfo.phoneNumber}
-                            </td>
-                            <td className="px-6 py-4 text-black">{allorder.email}</td>
-                            <td className="px-6 py-4 text-black">{allorder.date}</td>
-                            <td className="px-6 py-4 text-black">
-                              {allorder.orderStatus}
-                            </td>
-
-                            <td className="px-6 py-4">
-                              <button onClick={() => updateOrderStatus(allorder.paymentId)}>Accept Order</button>
-                            </td>
-                          </tr>
-                        );
-                      });
-                    })}
+                          <td className="px-6 py-4 text-black">
+                            {allorder.addressInfo.name}
+                          </td>
+                          <td className="px-6 py-4 text-black">
+                            {allorder.addressInfo.address}
+                          </td>
+                          <td className="px-6 py-4 text-black">
+                            {allorder.addressInfo.pincode}
+                          </td>
+                          <td className="px-6 py-4 text-black">
+                            {allorder.addressInfo.phoneNumber}
+                          </td>
+                          <td className="px-6 py-4 text-black">{allorder.email}</td>
+                          <td className="px-6 py-4 text-black">{allorder.date}</td>
+                          <td className="px-6 py-4 text-black">
+                            {allorder.orderStatus}
+                          </td>
+                          <td className="px-6 py-4">
+                            <button onClick={() => updateOrderStatus(allorder.paymentId)}>Accept Order</button>
+                          </td>
+                        </tr>
+                      );
+                    });
+                  })}
                   </tbody>
                 </table>
 
