@@ -78,6 +78,13 @@
     font-size: 3rem;
     font-weight: 600;
     color: gray;
-    margin-bottom: 30px;
+    margin-bottom: 50px;
+    margin-top: 50px;
   }
   
+
+  .Wl-para{
+    font-size: xx-large;
+    color: gray;
+    margin: 6%;
+  }

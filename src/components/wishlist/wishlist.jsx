@@ -37,7 +37,7 @@ function Wishlist() {
             </div>
           ))
         ) : (
-          <p>Your wishlist is empty</p>
+          <p className="Wl-para">Your wishlist is empty</p>
         )}
       </div>
     </Layout>

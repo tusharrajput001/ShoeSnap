@@ -207,7 +207,7 @@ function ProductInfo() {
                           />
                         </div>
                         <p className="text-gray-600 mb-2">
-                          {users[review.userId]?.name || "Buyer"}
+                          {users[review.userId]?.name || ""}
                         </p>
                         <p>{review.feedback}</p>
                       </div>
