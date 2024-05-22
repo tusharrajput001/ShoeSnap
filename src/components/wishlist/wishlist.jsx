@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { removeFromWishlist } from "../redux/wishlistSlice";
-import Layout from "../components/layout/Layout";
+import { removeFromWishlist } from "../../redux/wishlistSlice";
+import Layout from "../layout/Layout";
 import { Link } from "react-router-dom";
 import './wishlist.css'
 

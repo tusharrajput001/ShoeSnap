@@ -132,7 +132,7 @@ function MyState(props) {
             const result = await getDocs(collection(fireDB, "users"));
             const usersArray = [];
             result.forEach((doc) => {
-                usersArray.push(doc.data());
+                usersArray.push({ ...doc.data(), id: doc.id });
             });
             setUser(usersArray);
         } catch (error) {

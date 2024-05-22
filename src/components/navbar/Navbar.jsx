@@ -5,6 +5,8 @@ import { Dialog, Transition } from "@headlessui/react";
 import { RxCross2 } from "react-icons/rx";
 import { useSelector } from "react-redux";
 import "./Navbar.css";
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
 
 function Navbar() {
   const context = useContext(myContext);
@@ -220,10 +222,7 @@ function Navbar() {
                       >
                         Order
                       </Link>
-                      <Link to={"/wishlist"} className="text-lg font-medium text-gray-700 ">
-                        Wishlist
-                    {/* Wishlist ({wishlistItems.length}) */}
-                  </Link>
+
                       <Link
                         to={"/account"}
                         className="text-lg font-medium text-gray-700 "
@@ -231,6 +230,10 @@ function Navbar() {
                       >
                         Account
                       </Link>
+                      <Link to={"/wishlist"} className="text-lg font-medium text-gray-700 ">
+                       
+                       <i class="fa-regular fa-heart"></i> {wishlistItems.length}
+                     </Link>
                       <button
                         onClick={handleCartClick}
                         className="group -m-2 flex items-center p-2"
@@ -253,6 +256,7 @@ function Navbar() {
                           {cartItems.length}
                         </span>
                       </button>
+                      
                     </>
                   )}
                   {isAdmin && (
