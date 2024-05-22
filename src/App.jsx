@@ -21,6 +21,7 @@ import UpdateProduct from "./pages/admin/page/UpdateProduct";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Allproducts from "./pages/allproducts/Allproducts";
+import Wishlist from "./components/wishlist";
 function App() {
   return (
     <MyState>
@@ -38,6 +39,7 @@ function App() {
           />
           <Route path="/cart" element={<Cart />} />
           <Route path="/account" element={ <Account /> } />
+          <Route path="/wishlist" element={<Wishlist/>} /> 
           <Route
             path="/dashboard"
             element={

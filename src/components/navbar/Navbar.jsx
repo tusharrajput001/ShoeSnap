@@ -9,6 +9,7 @@ import "./Navbar.css";
 function Navbar() {
   const context = useContext(myContext);
   const { mode, toggleMode } = context;
+  const wishlistItems = useSelector((state) => state.wishlist);
 
   const [open, setOpen] = useState(false);
 
@@ -28,6 +29,8 @@ function Navbar() {
       window.location.href = '/cart';
     }
   };
+
+  
 
   const isAdmin = user?.user?.email === "tusharr0491@gmail.com";
 
@@ -75,6 +78,7 @@ function Navbar() {
                   </button>
                 </div>
                 <div className="space-y-6 border-t border-gray-200 px-4 py-6">
+                  
                   <Link
                     to={"/allproducts"}
                     className="text-sm font-medium text-gray-900 "
@@ -82,7 +86,7 @@ function Navbar() {
                   >
                     All Products
                   </Link>
-
+                  
                   {user && !isAdmin && (
                     <div className="flow-root">
                       <Link
@@ -92,6 +96,7 @@ function Navbar() {
                       >
                         Order
                       </Link>
+
                     </div>
                   )}
 
@@ -215,6 +220,10 @@ function Navbar() {
                       >
                         Order
                       </Link>
+                      <Link to={"/wishlist"} className="text-lg font-medium text-gray-700 ">
+                        Wishlist
+                    {/* Wishlist ({wishlistItems.length}) */}
+                  </Link>
                       <Link
                         to={"/account"}
                         className="text-lg font-medium text-gray-700 "
@@ -294,5 +303,7 @@ function Navbar() {
     </div>
   );
 }
+
+
 
 export default Navbar;
