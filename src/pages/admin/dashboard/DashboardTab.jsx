@@ -21,6 +21,7 @@ function DashboardTab() {
   } = context;
 
   const [isOpen, setIsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   function closeModal() {
     setIsOpen(false);
@@ -34,6 +35,11 @@ function DashboardTab() {
     window.location.href = "/addproduct";
   };
 
+    // Function to filter orders based on search query
+    const filteredOrders = order.filter((item) =>
+      item.addressInfo.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  
   return (
     <>
       <div className="container mx-auto">
@@ -186,6 +192,14 @@ function DashboardTab() {
             <TabPanel>
               <div className="relative overflow-x-auto mb-16">
                 <h1 className="text-center mb-5 text-3xl font-semibold underline" style={{ color: mode === "dark" ? "white" : "" }}>Order Details</h1>
+                {/* Search Input */}
+              <input
+                type="text"
+                placeholder="Search by name"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="border border-gray-300 rounded-lg px-3 py-2 mb-4"
+              />
                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                   <thead
                     className="text-xs text-black uppercase bg-gray-200"
@@ -211,7 +225,7 @@ function DashboardTab() {
                         Shoe Size
                       </th>
                       <th scope="col" className="px-6 py-3">
-                        Qty. {/* Add Quantity column header */}
+                        Qty. 
                       </th>
                       <th scope="col" className="px-6 py-3">
                         Category
@@ -244,7 +258,7 @@ function DashboardTab() {
                     </tr>
                   </thead>
                   <tbody>
-                  {order.map((allorder, index) => {
+                  {filteredOrders.map((allorder, index) => {
                     return allorder.cartItems.map((item, itemIndex) => {
                       const {
                         title,
