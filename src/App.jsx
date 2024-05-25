@@ -23,6 +23,8 @@ import "react-toastify/dist/ReactToastify.css";
 import Allproducts from "./pages/allproducts/Allproducts";
 import Wishlist from "./components/wishlist/wishlist";
 import FAQAccordion from "./components/FAQAccordion/FAQAccordion";
+import AboutUs from "./components/AboutUS/Aboutus";
+import ContactUs from "./components/ContactUs/Contactus";
 function App() {
   return (
     <MyState>
@@ -71,6 +73,8 @@ function App() {
           />
           <Route path="/*" element={<NoPage />} />
           <Route path="/FAQAccordion" element={<FAQAccordion/>} /> 
+          <Route path="/Aboutus" element={<AboutUs/>} /> 
+          <Route path="/Contactus" element={<ContactUs/>} /> 
         </Routes>
         <ToastContainer />
       </Router>

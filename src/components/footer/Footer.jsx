@@ -10,9 +10,9 @@ const Footer = () => {
         <div className="footer-col">
           <h4>company</h4>
           <ul>
-            <li><a href="#">about us</a></li>
-            <li><a href="#">our services</a></li>
-            <li><a href="#">privacy policy</a></li>
+            <li><a href="/Aboutus">about us</a></li>
+            <li><a href="/Contactus">Contact us</a></li>
+              
             <li><a href="/">visit website</a></li>
           </ul>
         </div>
@@ -38,11 +38,11 @@ const Footer = () => {
           <h4>follow us</h4>
           <div className="social-links">
             <a href="https://facebook.com"><i className="fa-brands fa-facebook-f"></i></a>
-            <a href="#"><i className="fa-brands fa-x-twitter"></i></a>
-            <a href="#"><i className="fa-brands fa-instagram"></i></a>
+            <a href="https://twitter.com"><i className="fa-brands fa-x-twitter"></i></a>
+            <a href="https://instagram.com"><i className="fa-brands fa-instagram"></i></a>
           </div>
         </div>
-      </div>
+      </div>  
     </footer>
   );
 }
