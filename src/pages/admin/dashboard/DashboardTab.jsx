@@ -22,6 +22,8 @@ function DashboardTab() {
 
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [paymentIdSearchQuery, setPaymentIdSearchQuery] = useState("");
 
   function closeModal() {
     setIsOpen(false);
@@ -38,6 +40,8 @@ function DashboardTab() {
     // Function to filter orders based on search query
     const filteredOrders = order.filter((item) =>
       item.addressInfo.name.toLowerCase().includes(searchQuery.toLowerCase())
+      && item.paymentId.toLowerCase().includes(paymentIdSearchQuery.toLowerCase())
+      && (statusFilter === "all" || item.orderStatus.toLowerCase() === statusFilter)
     );
   
   return (
@@ -200,6 +204,23 @@ function DashboardTab() {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="border border-gray-300 rounded-lg px-3 py-2 mb-4"
               />
+ <input
+                  type="text"
+                  placeholder="Search by payment ID"
+                  value={paymentIdSearchQuery}
+                  onChange={(e) => setPaymentIdSearchQuery(e.target.value)}
+                  className="border border-gray-300 rounded-lg px-3 py-2 mb-4 mx-2"
+                />
+              {/* Status Filter Dropdown */}
+              <select
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value)}
+                  className="border border-gray-300 rounded-lg px-3 py-1 mb-4 mx-3"
+                >
+                  <option value="all">All Orders</option>
+                  <option value="pending">Pending Orders</option>
+                  <option value="confirmed">Confirmed Orders</option>
+                </select>
                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                   <thead
                     className="text-xs text-black uppercase bg-gray-200"
