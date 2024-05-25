@@ -22,6 +22,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Allproducts from "./pages/allproducts/Allproducts";
 import Wishlist from "./components/wishlist/wishlist";
+import FAQAccordion from "./components/FAQAccordion/FAQAccordion";
 function App() {
   return (
     <MyState>
@@ -50,6 +51,7 @@ function App() {
           />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+
           <Route path="/productinfo/:id" element={<ProductInfo />} />
           <Route
             path="/addproduct"
@@ -68,6 +70,7 @@ function App() {
             }
           />
           <Route path="/*" element={<NoPage />} />
+          <Route path="/FAQAccordion" element={<FAQAccordion/>} /> 
         </Routes>
         <ToastContainer />
       </Router>

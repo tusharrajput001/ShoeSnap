@@ -13,35 +13,33 @@ const Footer = () => {
             <li><a href="#">about us</a></li>
             <li><a href="#">our services</a></li>
             <li><a href="#">privacy policy</a></li>
-            <li><a href="#">visit website</a></li>
+            <li><a href="/">visit website</a></li>
           </ul>
         </div>
         <div className="footer-col">
           <h4>get help</h4>
           <ul>
-            <li><a href="#">FAQ</a></li>
-            <li><a href="#">shipping</a></li>
-            <li><a href="#">returns</a></li>
-            <li><a href="#">order status</a></li>
-            <li><a href="#">payment options</a></li>
+            <li><a href="/FAQAccordion">FAQ</a></li>
+            <li><a href="/order">shipping</a></li>
+            <li><a href="/order">order status</a></li>
+     
           </ul>
         </div>
         <div className="footer-col">
           <h4>Shoe Snap</h4>
           <ul>
-            <li><a href="#">download</a></li>
-            <li><a href="#">changelog</a></li>
-            <li><a href="#">github</a></li>
-            <li><a href="#">all version</a></li>
+            <li><a href="/allproducts">Explore</a></li>
+            <li><a href="/order">My Orders</a></li>
+            <li><a href="/wishlist">wishlist</a></li>
+            <li><a href="/cart">cart</a></li>
           </ul>
         </div>
         <div className="footer-col">
           <h4>follow us</h4>
           <div className="social-links">
-            <a href="#"><i className="fa-brands fa-facebook-f"></i></a>
+            <a href="https://facebook.com"><i className="fa-brands fa-facebook-f"></i></a>
             <a href="#"><i className="fa-brands fa-x-twitter"></i></a>
             <a href="#"><i className="fa-brands fa-instagram"></i></a>
-            <a href="#"><i className="fa-brands fa-linkedin-in"></i></a>
           </div>
         </div>
       </div>
