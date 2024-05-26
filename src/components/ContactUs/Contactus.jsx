@@ -33,10 +33,10 @@ const ContactUs = () => {
         <div id="contact-container">
           <h1 className='contacthead'>Contact US</h1>
           <form id="form" className="topBefore" onSubmit={handleSubmit}>
-            <input id="name" type="text" name="name" placeholder="NAME" required />
-            <input id="email" type="email" name="email" placeholder="E-MAIL" required />
-            <textarea id="message" name="message" placeholder="MESSAGE" required></textarea>
-            <input id="submit" type="submit" value="GO!" />
+            <input className='contactInp' id="name" type="text" name="name" placeholder="NAME" required />
+            <input className='contactInp' id="email" type="email" name="email" placeholder="E-MAIL" required />
+            <textarea  className="contactTxtarea"id="message" name="message" placeholder="MESSAGE" required></textarea>
+            <input className='contactInp' id="submit" type="submit" value="GO!" />
           </form>
         </div>
       </div>

@@ -88,7 +88,7 @@ input:hover:focus::-ms-placeholder, textarea:hover::focus:-ms-placeholder {
   margin: 50px auto 100px auto;
 }
 
-input {
+.contactInp {
   font-family: 'Lato', sans-serif;
   font-size: 0.875em;
   width: 500px;
@@ -110,7 +110,7 @@ input:hover {
   color: #e2dedb;
 }
 
-textarea {
+.contactTxtarea {
   width: 500px;
   max-width: 500px;
   height: 110px;
