@@ -125,7 +125,7 @@ function DashboardTab() {
                     }}
                   >
                     <div className="flex gap-2 items-center">
-                      Add Product <FaCartPlus size={20} />
+                       <FaCartPlus size={30} />
                     </div>
                   </button>
                 </div>

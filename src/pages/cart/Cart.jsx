@@ -17,11 +17,24 @@ function Cart() {
 
   const deleteCart = (item) => {
     dispatch(deleteFromCart(item));
-    toast.success("Delete cart");
+    toast.success("Deleted from cart");
   };
 
   const handleQuantityChange = (id, quantity) => {
     if (quantity < 1) return; // prevent quantity from being less than 1
+    if (quantity > 5) {
+      toast.error("Cannot add more than 5 quantities", {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      return;
+    }
     dispatch(updateCartItemQuantity({ id, quantity }));
   };
 
