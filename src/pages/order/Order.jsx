@@ -109,7 +109,11 @@ function Order() {
                       <h1 className="text-sm text-monospace text-gray-900 mb-3">Date: {order.date}</h1>
                       <button
                         onClick={() => handleReturnRequest(order.paymentId, new Date(order.date))}
-                        className="mt-4 bg-red-400 text-white py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        className={`mt-4 text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+                          order.orderStatus === 'Delivered' 
+                            ? 'bg-red-400 hover:bg-indigo-600' 
+                            : 'bg-gray-400 cursor-not-allowed'
+                        }`}
                         disabled={order.orderStatus !== 'Delivered'}
                       >
                         Request Return
@@ -135,34 +139,33 @@ function Order() {
                           svgIconPath="M9.5 14.25l-5.584 2.936 1.066-6.218L.465 6.564l6.243-.907L9.5 0l2.792 5.657 6.243.907-4.517 4.404 1.066 6.218"
                         />
                       </div>
-                                      </div>
-                  <textarea
-                    className="w-full h-32 px-4 py-2 text-base placeholder-gray-500 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                    placeholder="Enter your feedback here..."
-                    value={feedbacks[order.paymentId] || ''}
-                    onChange={(e) => handleFeedbackChange(order.paymentId, e.target.value)}
-                  ></textarea>
-                  <button
-                    onClick={() => handleSubmitFeedback(order.paymentId, item.id)}
-                    className="mt-4 bg-customOrange text-white py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  >
-                    Submit Review
-                  </button>
+                    </div>
+                    <textarea
+                      className="w-full h-32 px-4 py-2 text-base placeholder-gray-500 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      placeholder="Enter your feedback here..."
+                      value={feedbacks[order.paymentId] || ''}
+                      onChange={(e) => handleFeedbackChange(order.paymentId, e.target.value)}
+                    ></textarea>
+                    <button
+                      onClick={() => handleSubmitFeedback(order.paymentId, item.id)}
+                      className="mt-4 bg-customOrange text-white py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    >
+                      Submit Review
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-    ) : (
-      <div className="flex flex-col items-center justify-center h-full mb-44">
-        <h2 className="text-center text-2xl text-black mb-4 mt-10">No Orders</h2>
-        <FaShoppingCart className="text-6xl text-gray-400" />
-      </div>
-    )}
-  </Layout>
-);
+              ))}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center h-full mb-44">
+          <h2 className="text-center text-2xl text-black mb-4 mt-10">No Orders</h2>
+          <FaShoppingCart className="text-6xl text-gray-400" />
+        </div>
+      )}
+    </Layout>
+  );
 }
 
 export default Order;
-
