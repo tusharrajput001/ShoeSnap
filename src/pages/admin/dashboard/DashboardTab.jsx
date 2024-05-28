@@ -51,11 +51,8 @@ function DashboardTab() {
   const filteredOrders = order.filter(
     (item) =>
       item.addressInfo.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-      item.paymentId
-        .toLowerCase()
-        .includes(paymentIdSearchQuery.toLowerCase()) &&
-      (statusFilter === "all" ||
-        item.orderStatus.toLowerCase() === statusFilter)
+      item.paymentId.toLowerCase().includes(paymentIdSearchQuery.toLowerCase()) &&
+      (statusFilter === "all" || item.orderStatus.toLowerCase() === statusFilter)
   );
 
   // Function to handle order status change
@@ -67,7 +64,6 @@ function DashboardTab() {
       console.error("Error updating order status:", error);
     }
   };
-
 
   return (
     <>
@@ -305,9 +301,12 @@ function DashboardTab() {
           onChange={(e) => setStatusFilter(e.target.value)}
           className="border border-gray-300 rounded-lg px-3 py-1 mb-4 mx-3"
         >
-          <option value="all">All Orders</option>
-          <option value="confirmed">confirmed Orders</option>
-          <option value="Delivered">Delivered Orders</option>
+                  <option value="all">All Orders</option>
+                  <option value="confirmed">New Orders</option>
+                  <option value="returned">Returned Orders</option>
+                  <option value="return initiated">Return requests</option>
+                  
+              
         </select>
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead
