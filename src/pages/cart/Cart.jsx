@@ -62,13 +62,42 @@ function Cart() {
   const [address, setAddress] = useState("");
   const [pincode, setPincode] = useState("");
   const [phoneNumber, setPhoneNumber] = useState(""); 
+  const [errors, setErrors] = useState({ name: '', address: '', pincode: '', phoneNumber: '' });
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const selectedSizeParam = parseInt(searchParams.get("size")) || 6; // Default to 6 if not found
 
+  const validate = () => {
+    let valid = true;
+    let errors = {};
+
+    if (!name || !/^[a-zA-Z]+$/.test(name)) {
+      errors.name = "Name is required and should not contain spaces, numbers or special characters";
+      valid = false;
+    }
+
+    if (!address) {
+      errors.address = "Address is required";
+      valid = false;
+    }
+
+    if (!pincode || !/^\d{6}$/.test(pincode)) {
+      errors.pincode = "Valid pincode is required";
+      valid = false;
+    }
+
+    if (!phoneNumber || !/^\d{10}$/.test(phoneNumber)) {
+      errors.phoneNumber = "Valid phone number is required";
+      valid = false;
+    }
+
+    setErrors(errors);
+    return valid;
+  };
+
   const buyNow = async () => {
-    if (!name || !address || !pincode || !phoneNumber) {
-      return toast.error("All fields are required", {
+    if (!validate()) {
+      toast.error("Please correct the errors before proceeding", {
         position: "top-center",
         autoClose: 1000,
         hideProgressBar: false,
@@ -78,6 +107,7 @@ function Cart() {
         progress: undefined,
         theme: "colored",
       });
+      return;
     }
 
     const addressInfo = {
@@ -280,12 +310,14 @@ function Cart() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
+              {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
               <textarea
                 className="p-2 border border-gray-300 rounded"
                 placeholder="Enter your address"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
               ></textarea>
+              {errors.address && <p className="text-red-500 text-sm">{errors.address}</p>}
               <input
                 type="text"
                 className="p-2 border border-gray-300 rounded"
@@ -293,6 +325,7 @@ function Cart() {
                 value={pincode}
                 onChange={(e) => setPincode(e.target.value)}
               />
+              {errors.pincode && <p className="text-red-500 text-sm">{errors.pincode}</p>}
               <input
                 type="text"
                 className="p-2 border border-gray-300 rounded"
@@ -300,6 +333,7 @@ function Cart() {
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
               />
+              {errors.phoneNumber && <p className="text-red-500 text-sm">{errors.phoneNumber}</p>}
               <button
                 onClick={buyNow}
                 className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
