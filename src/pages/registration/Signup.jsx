@@ -23,8 +23,14 @@ function Signup() {
         let valid = true;
         let errors = {};
 
+        const nameRegex = /^[A-Za-z]+$/;
+        const passwordRegex = /^(?=.*[!@#$%^&*])/;
+
         if (!name) {
             errors.name = "Name is required";
+            valid = false;
+        } else if (!nameRegex.test(name)) {
+            errors.name = "Name must contain only letters and no spaces";
             valid = false;
         }
 
@@ -39,8 +45,11 @@ function Signup() {
         if (!password) {
             errors.password = "Password is required";
             valid = false;
-        } else if (password.length < 6) {
-            errors.password = "Password must be at least 6 characters";
+        } else if (password.length < 8) {
+            errors.password = "Password must be at least 8 characters";
+            valid = false;
+        } else if (!passwordRegex.test(password)) {
+            errors.password = "Password must contain at least one special character";
             valid = false;
         }
 
