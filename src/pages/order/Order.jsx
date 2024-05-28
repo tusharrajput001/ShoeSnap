@@ -5,7 +5,7 @@ import Layout from '../../components/layout/Layout';
 import Loader from '../../components/loader/Loader';
 import StarRatings from 'react-star-ratings';
 import { toast } from "react-toastify";
-import { addDoc, collection, Timestamp, updateDoc, doc } from 'firebase/firestore';
+import { addDoc, collection, Timestamp } from 'firebase/firestore';
 import { fireDB } from '../../fireabase/FirebaseConfig';
 
 function Order() {
@@ -121,38 +121,40 @@ function Order() {
                     </div>
                   </div>
                   {/* Review Form */}
-                  <div className="mt-4 pb-5">
-                    <h2 className="text-gray-900 text-xl font-medium mb-2">
-                      Leave a Review
-                    </h2>
-                    <div className="flex items-center mb-4">
-                      <span className="text-gray-700 mr-2">Rating:</span>
-                      <div className="mt-4">
-                        <StarRatings
-                          rating={ratings[order.paymentId] || 0}
-                          starRatedColor="orange"
-                          changeRating={(value) => handleRatingChange(order.paymentId, value)}
-                          numberOfStars={5}
-                          name="rating"
-                          starDimension="3rem"
-                          starSpacing="0"
-                          svgIconPath="M9.5 14.25l-5.584 2.936 1.066-6.218L.465 6.564l6.243-.907L9.5 0l2.792 5.657 6.243.907-4.517 4.404 1.066 6.218"
-                        />
+                  {order.orderStatus === 'Delivered' && (
+                    <div className="mt-4 pb-5">
+                      <h2 className="text-gray-900 text-xl font-medium mb-2">
+                        Leave a Review
+                      </h2>
+                      <div className="flex items-center mb-4">
+                        <span className="text-gray-700 mr-2">Rating:</span>
+                        <div className="mt-4">
+                          <StarRatings
+                            rating={ratings[order.paymentId] || 0}
+                            starRatedColor="orange"
+                            changeRating={(value) => handleRatingChange(order.paymentId, value)}
+                            numberOfStars={5}
+                            name="rating"
+                            starDimension="3rem"
+                            starSpacing="0"
+                            svgIconPath="M9.5 14.25l-5.584 2.936 1.066-6.218L.465 6.564l6.243-.907L9.5 0l2.792 5.657 6.243.907-4.517 4.404 1.066 6.218"
+                          />
+                        </div>
                       </div>
+                      <textarea
+                        className="w-full h-32 px-4 py-2 text-base placeholder-gray-500 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        placeholder="Enter your feedback here..."
+                        value={feedbacks[order.paymentId] || ''}
+                        onChange={(e) => handleFeedbackChange(order.paymentId, e.target.value)}
+                      ></textarea>
+                      <button
+                        onClick={() => handleSubmitFeedback(order.paymentId, item.id)}
+                        className="mt-4 bg-customOrange text-white py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      >
+                        Submit Review
+                      </button>
                     </div>
-                    <textarea
-                      className="w-full h-32 px-4 py-2 text-base placeholder-gray-500 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                      placeholder="Enter your feedback here..."
-                      value={feedbacks[order.paymentId] || ''}
-                      onChange={(e) => handleFeedbackChange(order.paymentId, e.target.value)}
-                    ></textarea>
-                    <button
-                      onClick={() => handleSubmitFeedback(order.paymentId, item.id)}
-                      className="mt-4 bg-customOrange text-white py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                    >
-                      Submit Review
-                    </button>
-                  </div>
+                  )}
                 </div>
               ))}
             </div>
