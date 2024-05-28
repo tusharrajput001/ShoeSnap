@@ -5,13 +5,13 @@ import Layout from '../../components/layout/Layout';
 import Loader from '../../components/loader/Loader';
 import StarRatings from 'react-star-ratings';
 import { toast } from "react-toastify";
-import { addDoc, collection, Timestamp } from 'firebase/firestore';
+import { addDoc, collection, Timestamp, updateDoc, doc } from 'firebase/firestore';
 import { fireDB } from '../../fireabase/FirebaseConfig';
 
 function Order() {
   const userid = JSON.parse(localStorage.getItem('user')).user.uid;
   const context = useContext(myContext);
-  const { mode, loading, order, getProductReviews } = context;
+  const { mode, loading, order, getProductReviews, updateOrderStatus } = context;
 
   const [feedbacks, setFeedbacks] = useState({});
   const [ratings, setRatings] = useState({});
@@ -67,6 +67,24 @@ function Order() {
     }
   };
 
+  const handleReturnRequest = async (paymentId, deliveredDate) => {
+    try {
+      // Check if the order was delivered more than 3 days ago
+      const currentDate = new Date();
+      const differenceInDays = Math.floor((currentDate - deliveredDate) / (1000 * 60 * 60 * 24));
+      
+      if (differenceInDays > 3) {
+        return toast.error("You cannot return an order delivered more than 3 days ago");
+      }
+
+      await updateOrderStatus(paymentId, 'Return Initiated');
+      toast.success("Return request initiated successfully");
+    } catch (error) {
+      console.error("Error initiating return request:", error);
+      toast.error("Failed to initiate return request");
+    }
+  }
+
   return (
     <Layout>
       <h1 className='text-5xl text-slate-700 text-monospace text-center mt-5 mb-5'>My Orders</h1>
@@ -89,6 +107,13 @@ function Order() {
                     <div className='w-50 mt-4 sm:mt-0'>
                       <h1 className="text-sm text-monospace text-gray-900 mb-3">Order: {order.orderStatus}</h1>
                       <h1 className="text-sm text-monospace text-gray-900 mb-3">Date: {order.date}</h1>
+                      <button
+                        onClick={() => handleReturnRequest(order.paymentId, new Date(order.date))}
+                        className="mt-4 bg-red-400 text-white py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        disabled={order.orderStatus !== 'Delivered'}
+                      >
+                        Request Return
+                      </button>
                     </div>
                   </div>
                   {/* Review Form */}
@@ -110,33 +135,34 @@ function Order() {
                           svgIconPath="M9.5 14.25l-5.584 2.936 1.066-6.218L.465 6.564l6.243-.907L9.5 0l2.792 5.657 6.243.907-4.517 4.404 1.066 6.218"
                         />
                       </div>
-                    </div>
-                    <textarea
-                      className="w-full h-32 px-4 py-2 text-base placeholder-gray-500 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                      placeholder="Enter your feedback here..."
-                      value={feedbacks[order.paymentId] || ''}
-                      onChange={(e) => handleFeedbackChange(order.paymentId, e.target.value)}
-                    ></textarea>
-                    <button
-                      onClick={() => handleSubmitFeedback(order.paymentId, item.id)}
-                      className="mt-4 bg-customOrange text-white py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                    >
-                      Submit Review
-                    </button>
-                  </div>
+                                      </div>
+                  <textarea
+                    className="w-full h-32 px-4 py-2 text-base placeholder-gray-500 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    placeholder="Enter your feedback here..."
+                    value={feedbacks[order.paymentId] || ''}
+                    onChange={(e) => handleFeedbackChange(order.paymentId, e.target.value)}
+                  ></textarea>
+                  <button
+                    onClick={() => handleSubmitFeedback(order.paymentId, item.id)}
+                    className="mt-4 bg-customOrange text-white py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  >
+                    Submit Review
+                  </button>
                 </div>
-              ))}
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="flex flex-col items-center justify-center h-full mb-44">
-          <h2 className="text-center text-2xl text-black mb-4 mt-10">No Orders</h2>
-          <FaShoppingCart className="text-6xl text-gray-400" />
-        </div>
-      )}
-    </Layout>
-  );
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div className="flex flex-col items-center justify-center h-full mb-44">
+        <h2 className="text-center text-2xl text-black mb-4 mt-10">No Orders</h2>
+        <FaShoppingCart className="text-6xl text-gray-400" />
+      </div>
+    )}
+  </Layout>
+);
 }
 
 export default Order;
+

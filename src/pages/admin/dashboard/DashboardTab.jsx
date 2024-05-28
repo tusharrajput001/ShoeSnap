@@ -374,19 +374,21 @@ function DashboardTab() {
                       {allorder.orderStatus}
                     </td>
                     <td className="px-6 py-4">
-                      <button
-                        className="bg-green-400 text-black p-2 rounded-xl"
-                        onClick={() => handleStatusChange(allorder.paymentId, 'Delivered')}
-                      >
+                    <button
+                    className={`bg-green-400 text-black p-2 rounded-xl ${allorder.orderStatus.toLowerCase() === 'confirmed' ? '' : 'opacity-50 cursor-not-allowed'}`}
+                    onClick={() => handleStatusChange(allorder.paymentId, 'Delivered')}
+                    disabled={allorder.orderStatus.toLowerCase() !== 'confirmed'}
+  >
                         Order Delivered   
                       </button>
                     </td>
                     <td className="px-6 py-4">
                       {/* Button to accept return */}
                       <button
-                        className="bg-red-400 text-black p-2 rounded-xl"
-                        onClick={() => handleStatusChange(allorder.paymentId, 'returned')}
-                      >
+                      className={`bg-red-400 text-black p-2 rounded-xl ${allorder.orderStatus.toLowerCase() === 'return initiated' ? '' : 'opacity-50 cursor-not-allowed'}`}
+                      onClick={() => handleStatusChange(allorder.paymentId, 'returned')}
+                      disabled={allorder.orderStatus.toLowerCase() !== 'return initiated'}
+  >
                         Accept Return
                       </button>
                     </td>
