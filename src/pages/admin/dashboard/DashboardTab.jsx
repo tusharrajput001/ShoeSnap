@@ -58,6 +58,17 @@ function DashboardTab() {
         item.orderStatus.toLowerCase() === statusFilter)
   );
 
+  // Function to handle order status change
+  const handleStatusChange = async (paymentId, newStatus) => {
+    try {
+      await updateOrderStatus(paymentId, newStatus);
+      console.log(`Order status for paymentId ${paymentId} updated to ${newStatus}`);
+    } catch (error) {
+      console.error("Error updating order status:", error);
+    }
+  };
+
+
   return (
     <>
       <div className="">
@@ -266,177 +277,128 @@ function DashboardTab() {
             </TabPanel>
 
             <TabPanel>
-              <div className="relative overflow-x-auto mb-16">
-                <h1
-                  className="text-center mb-5 text-3xl font-semibold underline"
-                  style={{ color: mode === "dark" ? "white" : "" }}
-                >
-                  Order Details
-                </h1>
-                {/* Search Input */}
-                <input
-                  type="text"
-                  placeholder="Search by name"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="border border-gray-300 rounded-lg px-3 py-2 mb-4"
-                />
-                <input
-                  type="text"
-                  placeholder="Search by payment ID"
-                  value={paymentIdSearchQuery}
-                  onChange={(e) => setPaymentIdSearchQuery(e.target.value)}
-                  className="border border-gray-300 rounded-lg px-3 py-2 mb-4 mx-2"
-                />
-                {/* Status Filter Dropdown */}
-                <select
-                  value={statusFilter}
-                  onChange={(e) => setStatusFilter(e.target.value)}
-                  className="border border-gray-300 rounded-lg px-3 py-1 mb-4 mx-3"
-                >
-                  <option value="all">All Orders</option>
-                  <option value="pending">Pending Orders</option>
-                  <option value="confirmed">Confirmed Orders</option>
-                </select>
-                <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                  <thead
-                    className="text-xs text-black uppercase bg-gray-200"
+      <div className="relative overflow-x-auto mb-16">
+        <h1
+          className="text-center mb-5 text-3xl font-semibold underline"
+          style={{ color: mode === "dark" ? "white" : "" }}
+        >
+          Order Details
+        </h1>
+        {/* Search Input */}
+        <input
+          type="text"
+          placeholder="Search by name"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="border border-gray-300 rounded-lg px-3 py-2 mb-4"
+        />
+        <input
+          type="text"
+          placeholder="Search by payment ID"
+          value={paymentIdSearchQuery}
+          onChange={(e) => setPaymentIdSearchQuery(e.target.value)}
+          className="border border-gray-300 rounded-lg px-3 py-2 mb-4 mx-2"
+        />
+        {/* Status Filter Dropdown */}
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="border border-gray-300 rounded-lg px-3 py-1 mb-4 mx-3"
+        >
+          <option value="all">All Orders</option>
+          <option value="confirmed">confirmed Orders</option>
+          <option value="Delivered">Delivered Orders</option>
+        </select>
+        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <thead
+            className="text-xs text-black uppercase bg-gray-200"
+            style={{
+              backgroundColor: mode === "dark" ? "rgb(46 49 55)" : "",
+              color: mode === "dark" ? "white" : "",
+            }}
+          >
+            <tr>
+              <th scope="col" className="px-6 py-3">Payment Id</th>
+              <th scope="col" className="px-6 py-3">Image</th>
+              <th scope="col" className="px-6 py-3">Title</th>
+              <th scope="col" className="px-6 py-3">Price</th>
+              <th scope="col" className="px-11 py-3">Shoe Size</th>
+              <th scope="col" className="px-6 py-3">Qty.</th>
+              <th scope="col" className="px-6 py-3">Category</th>
+              <th scope="col" className="px-6 py-3">Name</th>
+              <th scope="col" className="px-16 py-3">Address</th>
+              <th scope="col" className="px-6 py-3">Pincode</th>
+              <th scope="col" className="px-6 py-3">Ph. Number</th>
+              <th scope="col" className="px-6 py-3 text-center">Email</th>
+              <th scope="col" className="px-16 py-3">Date</th>
+              <th scope="col" className="px-6 py-3">OrderStatus</th>
+              <th scope="col" className="px-16 py-3">Action</th>
+              <th scope="col" className="px-16 py-3">Return</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredOrders.map((allorder, index) => {
+              return allorder.cartItems.map((item, itemIndex) => {
+                const { title, category, imageUrl, price, quantity, size } = item; // Retrieve shoe size from cart item
+                return (
+                  <tr
+                    key={itemIndex}
+                    className="bg-gray-50 border-b  dark:border-gray-700"
                     style={{
                       backgroundColor: mode === "dark" ? "rgb(46 49 55)" : "",
                       color: mode === "dark" ? "white" : "",
                     }}
                   >
-                    <tr>
-                      <th scope="col" className="px-6 py-3">
-                        Payment Id
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        Image
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        Title
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        Price
-                      </th>
-                      <th scope="col" className="px-11 py-3">
-                        Shoe Size
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        Qty.
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        Category
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        Name
-                      </th>
-                      <th scope="col" className="px-16 py-3">
-                        Address
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        Pincode
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        Ph. Number
-                      </th>
-                      <th scope="col" className="px-6 py-3 text-center">
-                        Email
-                      </th>
-                      <th scope="col" className="px-16 py-3">
-                        Date
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        OrderStatus
-                      </th>
-
-                      <th scope="col" className="px-16 py-3">
-                        Action
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredOrders.map((allorder, index) => {
-                      return allorder.cartItems.map((item, itemIndex) => {
-                        const {
-                          title,
-                          category,
-                          imageUrl,
-                          price,
-                          quantity,
-                          size, // Retrieve shoe size from cart item
-                        } = item;
-                        return (
-                          <tr
-                            key={itemIndex}
-                            className="bg-gray-50 border-b  dark:border-gray-700"
-                            style={{
-                              backgroundColor:
-                                mode === "dark" ? "rgb(46 49 55)" : "",
-                              color: mode === "dark" ? "white" : "",
-                            }}
-                          >
-                            <td className="px-6 py-4 text-black">
-                              {allorder.paymentId}
-                            </td>
-                            <td className="px-6 py-4 font-medium text-black whitespace-nowrap">
-                              <img className="w-16" src={imageUrl} alt="img" />
-                            </td>
-                            <td className="px-6 py-4 text-black">{title}</td>
-                            <td className="px-6 py-4 text-black">₹{price}</td>
-                            <td className="px-6 py-4 text-black text-center">
-                              {size} {/* Display the shoe size */}
-                            </td>
-                            <td className="px-6 py-4 text-black">
-                              {item.quantity}
-                            </td>
-                            <td className="px-6 py-4 text-black">{category}</td>
-
-                            <td className="px-6 py-4 text-black">
-                              {allorder.addressInfo.name}
-                            </td>
-                            <td className="px-6 py-4 text-black">
-                              {allorder.addressInfo.address}
-                            </td>
-                            <td className="px-6 py-4 text-black">
-                              {allorder.addressInfo.pincode}
-                            </td>
-                            <td className="px-6 py-4 text-black">
-                              {allorder.addressInfo.phoneNumber}
-                            </td>
-                            <td className="px-6 py-4 text-black">
-                              {allorder.email}
-                            </td>
-                            <td className="px-6 py-4 text-black">
-                              {allorder.date}
-                            </td>
-                            <td
-                              className={`px-6 py-4 ${
-                                allorder.orderStatus.toLowerCase() === "pending"
-                                  ? "text-red-500"
-                                  : "text-green-600"
-                              }`}
-                            >
-                              {allorder.orderStatus}
-                            </td>
-                            <td className="px-6 py-4">
-                              <button
-                                className="bg-green-400 text-black p-2 rounded-xl "
-                                onClick={() =>
-                                  updateOrderStatus(allorder.paymentId)
-                                }
-                              >
-                                Accept Order
-                              </button>
-                            </td>
-                          </tr>
-                        );
-                      });
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </TabPanel>
+                    <td className="px-6 py-4 text-black">{allorder.paymentId}</td>
+                    <td className="px-6 py-4 font-medium text-black whitespace-nowrap">
+                      <img className="w-16" src={imageUrl} alt="img" />
+                    </td>
+                    <td className="px-6 py-4 text-black">{title}</td>
+                    <td className="px-6 py-4 text-black">₹{price}</td>
+                    <td className="px-6 py-4 text-black text-center">{size}</td>
+                    <td className="px-6 py-4 text-black">{item.quantity}</td>
+                    <td className="px-6 py-4 text-black">{category}</td>
+                    <td className="px-6 py-4 text-black">{allorder.addressInfo.name}</td>
+                    <td className="px-6 py-4 text-black">{allorder.addressInfo.address}</td>
+                    <td className="px-6 py-4 text-black">{allorder.addressInfo.pincode}</td>
+                    <td className="px-6 py-4 text-black">{allorder.addressInfo.phoneNumber}</td>
+                    <td className="px-6 py-4 text-black">{allorder.email}</td>
+                    <td className="px-6 py-4 text-black">{allorder.date}</td>
+                    <td
+                      className={`px-6 py-4 ${
+                        allorder.orderStatus.toLowerCase() === "confirmed"
+                          ? "text-red-500"
+                          : "text-green-600"
+                      }`}
+                    >
+                      {allorder.orderStatus}
+                    </td>
+                    <td className="px-6 py-4">
+                      <button
+                        className="bg-green-400 text-black p-2 rounded-xl"
+                        onClick={() => handleStatusChange(allorder.paymentId, 'Delivered')}
+                      >
+                        Order Delivered   
+                      </button>
+                    </td>
+                    <td className="px-6 py-4">
+                      {/* Button to accept return */}
+                      <button
+                        className="bg-red-400 text-black p-2 rounded-xl"
+                        onClick={() => handleStatusChange(allorder.paymentId, 'returned')}
+                      >
+                        Accept Return
+                      </button>
+                    </td>
+                    
+                  </tr>
+                );
+              });
+            })}
+          </tbody>
+        </table>
+      </div>
+    </TabPanel>
 
             <TabPanel>
               <div className="relative overflow-x-auto mb-10">

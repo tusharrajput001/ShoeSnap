@@ -113,12 +113,15 @@ function MyState(props) {
     const getOrderData = async () => {
         setLoading(true);
         try {
-            const result = await getDocs(collection(fireDB, "order"));
-            const ordersArray = [];
-            result.forEach((doc) => {
-                ordersArray.push(doc.data());
+            const q = query(collection(fireDB, "order"));
+            const data = onSnapshot(q, (QuerySnapshot) => {
+                let ordersArray = [];
+                QuerySnapshot.forEach((doc) => {
+                    ordersArray.push({ ...doc.data(), id: doc.id }); // Ensure each order has an ID
+                });
+                setOrder(ordersArray);
             });
-            setOrder(ordersArray);
+            return () => data();
         } catch (error) {
             console.error(error);
         } finally {
@@ -161,7 +164,7 @@ function MyState(props) {
         }
     };
 
-    const updateOrderStatus = async (paymentId) => {
+    const updateOrderStatus = async (paymentId, newStatus) => { // Added newStatus parameter
         setLoading(true);
         try {
             const orderQuery = query(collection(fireDB, 'order'), where('paymentId', '==', paymentId));
@@ -174,11 +177,11 @@ function MyState(props) {
             const orderDoc = orderDocs[0];
             const orderId = orderDoc.id;
             const orderRef = doc(fireDB, 'order', orderId);
-            await updateDoc(orderRef, { orderStatus: 'confirmed' });
-            toast.success('Order confirmed');
+            await updateDoc(orderRef, { orderStatus: newStatus }); // Updated order status dynamically
+            toast.success('Order status updated successfully');
         } catch (error) {
             console.error('Error updating order status:', error);
-            toast.error('Failed to confirm order');
+            toast.error('Failed to update order status');
         } finally {
             setLoading(false);
         }

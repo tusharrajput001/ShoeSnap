@@ -138,7 +138,7 @@ function Cart() {
         const orderInfo = {
           cartItems,
           addressInfo,
-          orderStatus: "pending",
+          orderStatus: "confirmed",
           date: new Date().toLocaleString("en-US", {
             month: "short",
             day: "2-digit",
