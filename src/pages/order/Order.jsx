@@ -90,36 +90,38 @@ function Order() {
       <h1 className='text-5xl text-slate-700 text-monospace text-center mt-5 mb-5'>My Orders</h1>
       {loading && <Loader />}
       {order.length > 0 ? (
-        <div className="h-full pt-10">
+        <div className="pt-10">
           {order.filter(obj => obj.userid === userid).map((order, orderIndex) => (
             <div key={orderIndex} className="mx-auto max-w-5xl justify-center px-6 flex flex-col space-y-6 xl:px-0">
               {order.cartItems.map((item, itemIndex) => (
                 <div key={itemIndex} className="rounded-lg">
-                  <div className="mb-6 rounded-lg bg-white p-6 shadow-md flex flex-col sm:flex-row sm:justify-start" style={{ backgroundColor: mode === 'dark' ? '#282c34' : '', color: mode === 'dark' ? 'white' : '' }}>
-                    <img src={item.imageUrl} alt="product-image" className="w-full rounded-lg sm:w-40" />
-                    <div className="sm:ml-4 sm:flex sm:w-full sm:justify-between">
-                      <div className="mt-5 sm:mt-0">
-                        <h2 className="text-lg font-bold text-gray-900" style={{ color: mode === 'dark' ? 'white' : '' }}>{item.title}</h2>
-                        <p className="mt-1 text-xs text-gray-700" style={{ color: mode === 'dark' ? 'white' : '' }}>{item.description}</p>
-                        <p className="mt-1 text-xs text-gray-700" style={{ color: mode === 'dark' ? 'white' : '' }}>{item.price}</p>
+                  <div className="mb-6 rounded-lg bg-white p-6 shadow-md flex flex-col sm:flex-row sm:justify-start" style={{ display:'flex', flexDirection:'column',backgroundColor: mode === 'dark' ? '#282c34' : '', color: mode === 'dark' ? 'white' : '' }}>
+                    <div className='ContainerCart1' style={{display:'flex', flexDirection:'row'}}>
+                        <img src={item.imageUrl} alt="product-image" className="w-full rounded-lg sm:w-40" />
+                        <div className="sm:ml-4 sm:flex sm:w-full sm:justify-between">
+                          <div className="mt-5 sm:mt-0">
+                            <h2 className="text-lg font-bold text-gray-900" style={{ color: mode === 'dark' ? 'white' : '' }}>{item.title}</h2>
+                            <p className="mt-1 text-xs text-gray-700" style={{ color: mode === 'dark' ? 'white' : '' }}>{item.description}</p>
+                            <p className="mt-1 text-xs text-gray-700" style={{ color: mode === 'dark' ? 'white' : '' }}>{item.price}</p>
+                          </div>
+                          </div>
+                          <div className='w-50 mt-4 sm:mt-0 text-center'>
+                            <h1 className="text-sm text-monospace text-gray-900 mb-3">Order: {order.orderStatus}</h1>
+                            <h1 className="text-sm text-monospace text-gray-900 mb-3">Date: {order.date}</h1>
+                            <button
+                              onClick={() => handleReturnRequest(order.paymentId, new Date(order.date))}
+                              className={`mt-4 text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
+                                order.orderStatus === 'Delivered' 
+                                  ? 'bg-red-400 hover:bg-indigo-600' 
+                                  : 'bg-gray-400 cursor-not-allowed'
+                              }`}
+                              disabled={order.orderStatus !== 'Delivered'}
+                            >
+                              Request Return
+                            </button>
+                          </div>
                       </div>
-                    </div>
-                    <div className='w-50 mt-4 sm:mt-0'>
-                      <h1 className="text-sm text-monospace text-gray-900 mb-3">Order: {order.orderStatus}</h1>
-                      <h1 className="text-sm text-monospace text-gray-900 mb-3">Date: {order.date}</h1>
-                      <button
-                        onClick={() => handleReturnRequest(order.paymentId, new Date(order.date))}
-                        className={`mt-4 text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-                          order.orderStatus === 'Delivered' 
-                            ? 'bg-red-400 hover:bg-indigo-600' 
-                            : 'bg-gray-400 cursor-not-allowed'
-                        }`}
-                        disabled={order.orderStatus !== 'Delivered'}
-                      >
-                        Request Return
-                      </button>
-                    </div>
-                  </div>
+                <div className='ContainerCart2'>
                   {/* Review Form */}
                   {order.orderStatus === 'Delivered' && (
                     <div className="mt-4 pb-5">
@@ -155,6 +157,8 @@ function Order() {
                       </button>
                     </div>
                   )}
+                  </div>
+                </div>
                 </div>
               ))}
             </div>
