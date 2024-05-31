@@ -194,22 +194,25 @@ function ProductInfo() {
                   {reviews.length > 0 ? (
                     reviews.map((review, index) => (
                       <div key={index} className="mb-4">
-                        <div className="flex items-center mb-2">
-                          <span className="text-gray-700 mr-2">Rating:</span>
+                        <div className="flex p-4">
+                          {/* <span className="text-gray-700 mr-2">Rating:</span> */}
+                          <p className="text-top font-bold">{review.feedback}</p>
+                          <div className="ml-10">
                           <StarRatings
                             rating={review.rating}
                             starRatedColor="orange"
                             numberOfStars={5}
                             name="rating"
-                            starDimension="1.5rem"
-                            starSpacing="0"
+                            starDimension="4rem"
+                            starSpacing="0px"
                             svgIconPath= "M9.5 14.25l-5.584 2.936 1.066-6.218L.465 6.564l6.243-.907L9.5 0l2.792 5.657 6.243.907-4.517 4.404 1.066 6.218"
                           />
+                          </div>
                         </div>
-                        <p className="text-gray-600 mb-2">
+                        {/* <p className="text-gray-600 mb-2">
                           {users[review.userId]?.name || ""}
-                        </p>
-                        <p>{review.feedback}</p>
+                        </p> */}
+                        {/* <p>{review.feedback}</p> */}
                       </div>
                     ))
                   ) : (

@@ -4,7 +4,7 @@ import { deleteFromCart, updateCartItemQuantity, updateCartItemSize } from "../.
 import { toast } from "react-toastify";
 import Layout from "../../components/layout/Layout";
 import myContext from "../../context/data/myContext";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore"; // Ensure you import the necessary methods
 import { fireDB } from "../../fireabase/FirebaseConfig";
 import { useLocation } from "react-router-dom";
 
@@ -67,6 +67,33 @@ function Cart() {
   const searchParams = new URLSearchParams(location.search);
   const selectedSizeParam = parseInt(searchParams.get("size")) || 6; // Default to 6 if not found
 
+  const fetchAddress = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (!user || !user.user || !user.user.uid) {
+        console.error("User is not authenticated");
+        return;
+      }
+
+      const docRef = doc(fireDB, "addresses", user.user.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        setName(data.name);
+        setAddress(data.address);
+        setPincode(data.pincode);
+        setPhoneNumber(data.phoneNumber);
+      }
+    } catch (error) {
+      console.error("Error fetching address: ", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAddress();
+  }, []);
+
   const validate = () => {
     let valid = true;
     let errors = {};
@@ -78,7 +105,7 @@ function Cart() {
 
     if (!address) {
       errors.address = "Address is required";
-      valid = false;
+      valid = false;  
     }
 
     if (!pincode || !/^\d{6}$/.test(pincode)) {
@@ -110,6 +137,12 @@ function Cart() {
       return;
     }
 
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user || !user.user || !user.user.uid) {
+      console.error("User is not authenticated");
+      return;
+    }
+
     const addressInfo = {
       name,
       address,
@@ -121,6 +154,23 @@ function Cart() {
         year: "numeric",
       }),
     };
+
+    try {
+      await setDoc(doc(fireDB, "addresses", user.user.uid), addressInfo);
+    } catch (error) {
+      console.error("Error saving address: ", error);
+      toast.error("Error saving address", {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      return;
+    }
 
     var options = {
       key: "rzp_test_gOPhnpDC96Mue9",
